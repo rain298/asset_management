@@ -6,7 +6,7 @@
             <field name="name">equipment.form</field>
             <field name="model" >asset_management.equipment_info</field>
             <field name="arch" type="xml">
-                <form string="equipment Form" create="false">
+                <form string="equipment Form" >
                      <header>
                      </header>
                     <group>
@@ -76,6 +76,19 @@
             <field name="model">asset_management.equipment_info</field>
             <field name="arch" type="xml" >
                 <tree create="false" delete="false"  >
+                    <field name="sn" string = "序列号"/>
+                    <field name="equipment_status" string = "设备状态"/>
+                    <field name="owner" string = "归属人"/>
+                    <field name="equipment_use" string = "设备用途"/>
+                    <field name="state" string="状态"></field>
+                </tree>
+            </field>
+        </record>
+         <record model="ir.ui.view" id="all_asset_management_tree_view">
+            <field name="name">all_equipment.tree</field>
+            <field name="model">asset_management.equipment_info</field>
+            <field name="arch" type="xml" >
+                <tree>
                     <field name="sn" string = "序列号"/>
                     <field name="equipment_status" string = "设备状态"/>
                     <field name="owner" string = "归属人"/>

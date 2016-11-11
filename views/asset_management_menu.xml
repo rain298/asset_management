@@ -303,7 +303,7 @@
 
         <record id="all_asset_info_action_tree" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
-            <field name="view_id" ref="asset_management_tree_view" />
+            <field name="view_id" ref="all_asset_management_tree_view" />
             <field name="act_window_id" ref="all_asset_info_action" />
         </record>
         <record id="all_asset_info_action_form" model="ir.actions.act_window.view">

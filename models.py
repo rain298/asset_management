@@ -35,6 +35,7 @@ class equipment_info(models.Model):
         (u'领用',u'领用'),
         (u'借用',u'借用'),
         (u'IT环境',u'IT环境'),
+        (u'归还',u'归还'),
     ],string='状态',default=u'待入库')
     owner = fields.Many2one('res.users',string=u"归属人",required=True)
     company = fields.Boolean(string=u"公司资产",required=True)
@@ -162,7 +163,7 @@ class equipment_storage(models.Model):
         else:
             self.state = 'ass_admin'
             self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0]
-        if self.approer_id and self.approver_id != self.user_id:
+        if self.approver_id and self.approver_id != self.user_id:
             data=[u'入库申请',self.storage_id]
             device=self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')],limit=1)
             device.send_email([self.approver_id],data)
@@ -767,15 +768,21 @@ class back_to_store(models.Model):
     get_id = fields.Many2one('asset_management.equipment_storage',string='领用单')
     it_apply_id = fields.Many2one('asset_management.equipment_it_apply',string='it申请单')
 
-    # @api.one
-    # @api.depends('lend_id','get_id','it_apply_id')
-    # def _compute_SN(self):
-    #     if self.lend_id:
-    #         self.SN |= self.lend_id.SN
-    #     if self.get_id:
-    #         self.SN |= self.get_id.SN
-    #     if self.it_apply_id:
-    #         self.SN |= self.it_apply_id.SN
+    def create(self, cr, uid, vals, context=None):
+        template_model = self.pool.get('asset_management.equipment_info')
+        devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
+        for device in devices:
+            device.state = u'归还'
+        dates = fields.Date.today().split('-')
+        date = ''.join(dates)
+        template_model = self.pool.get('asset_management.back_to_store')
+        ids = template_model.search(cr, uid, [('back_id', 'like', date)], context=None)
+        backs = template_model.browse(cr, uid, ids, context=None).sorted(key=lambda r: r.back_id)
+        if len(backs):
+            vals['back_id'] = 'B' + str(int(backs[-1].back_id[1:]) + 1)
+        else:
+            vals['back_id'] = 'B' + date + '001'
+        return super(back_to_store, self).create(cr, uid, vals, context=context)
 
     @api.multi
     def action_to_confirm(self):
