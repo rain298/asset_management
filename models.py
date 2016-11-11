@@ -226,7 +226,7 @@ class equipment_lend(models.Model):
     lend_id = fields.Char(string=u"借用单号")
     user_id = fields.Many2one('res.users', string=u"申请人",default=lambda self: self.env.user,required=True)
     #user_id = fields.Many2one('res.users', string=u"申请人",required=True)
-    approver_id = fields.Many2one('res.users',default=lambda self: self.env.user,string=u"审批人",required=True)
+    approver_id = fields.Many2one('res.users',default=lambda self: self.env.user,string=u"审批人",)
     SN = fields.Many2many('asset_management.equipment_info',"lend_equipment_ref", string=u"设备SN",default=_default_SN,required=True)
     state = fields.Selection([
             ('demander', u"需求方申请"),
@@ -576,7 +576,7 @@ class equipment_it_apply(models.Model):
 
     apply_id = fields.Char(string=u"申请IT环境单号")
     user_id = fields.Many2one('res.users', string=u"申请人",default=lambda self: self.env.user,required=True)
-    approver_id = fields.Many2one('res.users', string=u"审批人",default=lambda self: self.env.user,required=True)
+    approver_id = fields.Many2one('res.users', string=u"审批人",default=lambda self: self.env.user,)
     SN = fields.Many2many('asset_management.equipment_info',"it_equipment_ref" ,string=u"设备SN",default=_default_SN, required=True)
     state = fields.Selection([
         ('demander', u"需求方申请"),
