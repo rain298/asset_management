@@ -576,7 +576,7 @@ class equipment_it_apply(models.Model):
 
     apply_id = fields.Char(string=u"申请IT环境单号")
     user_id = fields.Many2one('res.users', string=u"申请人",default=lambda self: self.env.user,required=True)
-    approver_id = fields.Many2one('res.users', string=u"审批人",default=lambda self: self.env.user,)
+    approver_id = fields.Many2one('res.users', string=u"审批人",default=lambda self: self.env.user)
     SN = fields.Many2many('asset_management.equipment_info',"it_equipment_ref" ,string=u"设备SN",default=_default_SN, required=True)
     state = fields.Selection([
         ('demander', u"需求方申请"),
@@ -733,7 +733,7 @@ class equipment_it_apply(models.Model):
         self.approver_id = None
         print
         self.env['asset_management.back_to_store'].create({'back_id': 'aaaaaaaa', 'state': 'ass_admin', 'approver_id':
-            self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0].id})
+            self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0].id,'SN':[[6,0,self.SN.ids]]},)
         back = self.env['asset_management.back_to_store'].search([])[-1]
         for sn in self.SN:
             if sn.state == u'IT环境':
@@ -771,6 +771,7 @@ class back_to_store(models.Model):
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('asset_management.equipment_info')
         devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
+        print vals['SN']
         for device in devices:
             device.state = u'归还'
         dates = fields.Date.today().split('-')
