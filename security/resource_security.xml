@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data noupdate="0">
+    <record model="res.groups" id="base.group_user">
+        <field name="comment">the user will be able to manage his own human resources stuff (leave request, timesheets, ...), if he is linked to an employee in the system.</field>
+    </record>
+
+    <record model="res.groups" id="asset_management.group_ass_admin">
+        <field name="name">资产管理员</field>
+        <field name="category_id" ref="base.module_category_assetmanagement"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">the user will be able to manage his own human resources stuff (leave request, timesheets, ...), if he is linked to an employee in the system.</field>
+    </record>
+    <record model="res.groups" id="asset_management.group_ass_director">
+        <field name="name">资产管理部门负责人</field>
+        <field name="category_id" ref="base.module_category_assetmanagement"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">the user will be able to manage his own human resources stuff (leave request, timesheets, ...), if he is linked to an employee in the system.</field>
+    </record>
+    <record model="res.groups" id="asset_management.group_ass_admin_manager">
+        <field name="name">资产管理部门主管</field>
+        <field name="category_id" ref="base.module_category_assetmanagement"/>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="comment">the user will be able to manage his own human resources stuff (leave request, timesheets, ...), if he is linked to an employee in the system.</field>
+    </record>
+
+    <record id="device_get_rule" model="ir.rule">
+        <field name="name">领用申请</field>
+        <field name="model_id" ref="model_asset_management_equipment_get"/>
+        <field name="domain_force">[('approver_id','=',user.id)]</field>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+    <record id="device_store_rule" model="ir.rule">
+        <field name="name">入库申请</field>
+        <field name="model_id" ref="model_asset_management_equipment_storage"/>
+        <field name="domain_force">[('approver_id','=',user.id)]</field>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+    <record id="device_lend_rule" model="ir.rule">
+        <field name="name">借用申请</field>
+        <field name="model_id" ref="model_asset_management_equipment_lend"/>
+        <field name="domain_force">[('approver_id','=',user.id)]</field>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+    <record id="device_apply_rule" model="ir.rule">
+        <field name="name">IT环境申请</field>
+        <field name="model_id" ref="model_asset_management_equipment_it_apply"/>
+        <field name="domain_force">[('approver_id','=',user.id)]</field>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+      <record id="device_back_rule" model="ir.rule">
+        <field name="name">归还申请</field>
+        <field name="model_id" ref="model_asset_management_back_to_store"/>
+        <field name="domain_force">[('approver_id','=',user.id)]</field>
+        <field name="perm_write" eval="1"/>
+        <field name="perm_read" eval="0"/>
+        <field name="perm_create" eval="0"/>
+        <field name="perm_unlink" eval="0"/>
+    </record>
+
+    </data>
+</openerp>

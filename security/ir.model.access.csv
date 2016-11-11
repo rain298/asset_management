@@ -1,0 +1,17 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+device_acess,device_acess,model_asset_management_equipment_info,,1,1,1,1
+equipment_storage_acess,equipment_storage_acess,model_asset_management_equipment_storage,,1,1,1,1
+equipment_lend_acess,equipment_lend_acess,model_asset_management_equipment_lend,,1,1,1,1
+equipment_get_acess,equipment_get_acess,model_asset_management_equipment_get,,1,1,1,1
+equipment_it_apply_acess,equipment_it_apply_acess,model_asset_management_equipment_it_apply,,1,1,1,1
+entry_store_examine_acess,entry_store_examine_acess,model_asset_management_entry_store_examine,,1,1,1,1
+lend_examine_acess,lend_examine_acess,model_asset_management_lend_examine,,1,1,1,1
+get_examine_acess,get_examine_acess,model_asset_management_get_examine,,1,1,1,1
+it_examine_acess,it_examine_acess,model_asset_management_it_examine,,1,1,1,1
+back_to_store_acess,back_to_store_acess,model_asset_management_back_to_store,,1,1,1,1
+back_examine_acess,back_examine_acess,model_asset_management_back_examine,,1,1,1,1
+
+
+
+
+

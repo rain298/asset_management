@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<openerp>
+    <data>
+        <template id="assets_backend"  name="asset_management assets" inherit_id="web.assets_backend">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" type="text/css" href="/asset_management/static/src/css/assetManagement.css"/>
+                <script type="text/javascript" charset="utf-8" src="/asset_management/static/src/js/watch.min.js"></script>
+                <script type="text/javascript" charset="utf-8" src="/asset_management/static/src/js/assetManagement.js"></script>
+            </xpath>
+        </template>
+    </data>
+</openerp>
