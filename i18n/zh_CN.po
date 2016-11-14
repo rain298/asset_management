@@ -63,7 +63,7 @@ msgstr "IT环境设备"
 #. module: asset_management
 #: model:ir.ui.menu,name:asset_management.examing_device_menu
 msgid "examing device"
-msgstr "待入库设备"
+msgstr "入库中的设备"
 
 #. module: asset_management
 #: model:ir.ui.menu,name:asset_management.the_lending_menu
