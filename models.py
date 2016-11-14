@@ -128,7 +128,7 @@ class equipment_storage(models.Model):
         if len(self.owners) == 1:
             if (self.owners[0] == self.user_id or self.owners[0] == self.env['res.groups'].search(
                     [('name', '=', u'资产管理员')], limit=1).users[0]) and self.user_id != self.env['res.groups'].search(
-                    ['name', '=', u'资产管理员'], limit=1):
+                    [('name', '=', u'资产管理员')], limit=1):
                 self.state = 'owner'
                 approver_id =self.owners[0]
                 self.owners[0] -= approver_id
