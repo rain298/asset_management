@@ -74,17 +74,18 @@ openerp.asset_management=function(instance){
             });
         },
         removeBtn:function(display_name){
-            var me=this
+            var me=this;
             var uid=instance.session.uid;
-            this.l=(uid==1?2:0);
+            var n=(uid==1?2:0);
+            this.l=n;
             var obj={
-                "所有的设备":[1+this.l,2+this.l,3+this.l,5+this.l],
-                "库存中的设备":[2+this.l,3+this.l,5+this.l],
-                "借用设备":[4+this.l],
-                "领用设备":[4+this.l],
-                "实验室设备":[4+this.l],
-                "我的设备":[1+this.l],
-                "流程中的设备":[1+this.l]
+                "所有的设备":[1+n,2+n,3+n,5+n],
+                "库存中的设备":[2+n,3+n,5+n],
+                "借用设备":[4+n],
+                "领用设备":[4+n],
+                "实验室设备":[4+n],
+                "我的设备":[1+n],
+                "流程中的设备":[1+n]
             };
             var timer=setInterval(function(){
                 if($("li.oe_sidebar_action").length>3){
