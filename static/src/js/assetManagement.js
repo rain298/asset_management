@@ -46,7 +46,7 @@ openerp.asset_management=function(instance){
         },
         addBtn:function(display_name){//添加自定义按钮
             var self=this;
-            if(display_name=="库存中的设备"){
+            if(display_name=="库存中的设备"||(display_name=="所有的设备")){
                 var btnParent=$('tr.oe_header_row:last>td:last');
                 if(btnParent.length>0&&($('tr.oe_header_row button.assetM').length==0)){
                     var btn=$("<button class='assetM oe_right'>入库</button>");
@@ -74,7 +74,8 @@ openerp.asset_management=function(instance){
         },
       removeBtn:function(display_name){
             var obj={
-                "库存中的设备":[3,4,5,7],
+                "所有的设备":[3,4,5,7],
+                "库存中的设备":[4,5,7],
                 "借用设备":[6],
                 "领用设备":[6],
                 "实验室设备":[6],
