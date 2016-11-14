@@ -131,7 +131,7 @@ class equipment_storage(models.Model):
                     [('name', '=', u'资产管理员')], limit=1):
                 self.state = 'owner'
                 approver_id =self.owners[0]
-                self.owners[0] -= approver_id
+                self.owners -= approver_id
                 self.approver_id = self.owners[0]
 
 
