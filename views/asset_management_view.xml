@@ -72,7 +72,6 @@
                 <form string="equipment_get Form" >
                     <header>
                         <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
-
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
