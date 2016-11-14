@@ -92,7 +92,7 @@ class equipment_storage(models.Model):
     user_id = fields.Many2one('res.users', string=u"申请人",default=lambda self: self.env.user, required=True)
     approver_id = fields.Many2one('res.users', string=u"审批人",default=lambda self: self.env.user,)
     # SN = fields.Char()
-    SN = fields.Many2many('asset_management.equipment_info',"storge_equipment_ref",string=u"设备SN",required=True,default=_default_SN,domain=[('state','=',u'待入库')])
+    SN = fields.Many2many('asset_management.equipment_info',"storge_equipment_ref",string=u"设备SN",required=True,default=_default_SN,)
     state = fields.Selection([
         ('demander', u"需求方申请"),
         ('ass_admin', u"资产管理员"),
