@@ -110,7 +110,6 @@
             <field name="view_mode">tree,form</field>
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
             <!--<field name="view_id" ref="asset_get_form_view"/>-->
-            <!--<field name ="domain">管理员可以到</field>-->
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">创建新的流程-设备领用
                 </p>
@@ -156,7 +155,6 @@
             <field name="view_mode">tree,form</field>
             <field name ="domain">['|',('apply_exam_ids.approver_id','ilike',uid),('user_id','=',uid),('state','!=','demander')]</field>
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">创建新的流程-IT环境申请
                 </p>
@@ -179,7 +177,6 @@
             <field name="view_mode">tree,form</field>
             <field name ="domain">[('approver_id','=',uid)]</field>
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">创建新的流程-IT环境申请
                 </p>
@@ -214,8 +211,6 @@
             <field name ="domain">[('state','=',u'借用'),('lend_ids.user_id','like',uid)]</field>
              <field name="view_id" ref="asset_management_tree_view" />
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
-
         </record>
         <record id="got_asset_info_action" model="ir.actions.act_window" >
             <field name="name">领用设备</field>
@@ -224,9 +219,6 @@
             <field name="view_mode">tree,form,graph</field>
              <field name ="domain">[('state','=',u'领用'),('get_ids.user_id','like',uid)]</field>
              <field name="view_id" ref="asset_management_tree_view" />
-            <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
-
         </record>
         <record id="IT_apply_asset_info_action" model="ir.actions.act_window" >
             <field name="name">实验室设备</field>
@@ -235,9 +227,6 @@
             <field name="view_mode">tree,form,graph</field>
             <field name ="domain">[('state','=',u'IT环境'),('apply_ids','like',uid)]</field>
              <field name="view_id" ref="asset_management_tree_view" />
-            <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
-
         </record>
         <record id="examing_asset_info_action" model="ir.actions.act_window" >
             <field name="name">流程中的设备</field>
@@ -246,19 +235,27 @@
             <field name="view_mode">tree,form,graph</field>
             <field name ="domain">[('state','=',u'流程中')]</field>
              <field name="view_id" ref="asset_management_tree_view" />
-            <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
         </record>
+
         <record id="all_asset_info_action" model="ir.actions.act_window" >
             <field name="name">所有的设备</field>
             <field name="res_model">asset_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
             <field name ="domain">[('state','!=',u'流程中'),('state','!=',u'待入库')]</field>
-
-            <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
             <field name="view_id" ref="all_asset_management_form_view"/>
         </record>
+           <record id="all_asset_info_action_tree" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="all_asset_management_tree_view" />
+            <field name="act_window_id" ref="all_asset_info_action" />
+        </record>
+        <record id="all_asset_info_action_form" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="all_asset_management_form_view" />
+            <field name="act_window_id" ref="all_asset_info_action" />
+        </record>
+
         <record id="back_to_store_action" model="ir.actions.act_window" >
             <field name="name">设备归还</field>
             <field name="res_model">asset_management.back_to_store</field>

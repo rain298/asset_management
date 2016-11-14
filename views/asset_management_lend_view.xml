@@ -75,7 +75,7 @@
             <field name="name">equipment.tree</field>
             <field name="model">asset_management.equipment_info</field>
             <field name="arch" type="xml" >
-                <tree create="false" delete="false"  >
+                <tree create="false" >
                     <field name="sn" string = "序列号"/>
                     <field name="equipment_status" string = "设备状态"/>
                     <field name="owner" string = "归属人"/>

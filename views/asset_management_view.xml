@@ -24,6 +24,14 @@
                     </group>
                     <group>
                         <field name="SN" string = "设备" mode="tree"/>
+                         <field name="store_exam_ids" string="审批记录">
+                             <tree string="审批记录" edit="false" create="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name = "date" string = "审批时间" />
+
+                                </tree>
+                         </field>
                     </group>
                 </form>
             </field>
@@ -38,16 +46,24 @@
                     </header>
                     <group>
                         <group>
-                            <field name="storage_id" string = "入库单号" />
+                            <field name="storage_id" string = "入库单号" readonly="True"/>
                         </group>
                         <group>
-                           <field name="user_id" string="申请人" />
-                            <field name="approver_id" string="审批人" edit="false"/>
+                           <field name="user_id" string="申请人" readonly="True"/>
+                            <field name="approver_id" string="审批人" readonly="True" />
                         </group>
 
                     </group>
                     <group>
                         <field name="SN" string = "设备" mode="tree"/>
+                        <field name="store_exam_ids" string="审批记录">
+                             <tree string="审批记录" edit="false" create="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name = "date" string = "审批时间" />
+
+                                </tree>
+                         </field>
                     </group>
                 </form>
             </field>
@@ -113,9 +129,9 @@
                     </header>
                     <group>
                         <group>
-                            <field name="get_id" string = "领用单号"/>
-                            <field name="user_id" string = "申请人"/>
-                            <field name="approver_id" string = "审批人"/>
+                            <field name="get_id" string = "领用单号" readonly="True"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
                         </group>
                         <group>
                             <field name="get_date" string = "领用日期"/>
@@ -249,6 +265,14 @@
                     </group>
                      <group>
                         <field name="SN" string = "设备" mode="tree"/>
+                         <field name="apply_exam_ids" string="审批记录">
+                             <tree string="审批记录" edit="false" create="false">
+                                    <field name="approver_id" string = "审批人" />
+                                    <field name="result" string="审批结果" />
+                                    <field name = "date" string = "审批时间" />
+
+                                </tree>
+                         </field>
                     </group>
                 </form>
             </field>
