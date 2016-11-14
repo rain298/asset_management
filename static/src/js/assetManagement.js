@@ -72,17 +72,20 @@ openerp.asset_management=function(instance){
                 }
             });
         },
-        removeBtn:function(display_name){
+      removeBtn:function(display_name){
             var obj={
-                "库存中的设备":[3,4,6],
-                "借用设备":[5],
-                "领用设备":[5],
-                "实验室设备":[5]
+                "库存中的设备":[3,4,5,7],
+                "借用设备":[6],
+                "领用设备":[6],
+                "实验室设备":[6],
+                "我的设备":[3],
+                "流程中的设备":[3]
             };
             var timer=setInterval(function(){
                 if($("li.oe_sidebar_action").length>3){
                     clearInterval(timer);
                     $("li.oe_sidebar_action").css("display","none");
+                    $('a[data-index=3]').parent().css("display","none");
                     $(obj[display_name]).each(function(i,v){
                         $('a[data-index='+v+']').parent().css("display","block");
                     });

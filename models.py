@@ -385,7 +385,7 @@ class equipment_lend(models.Model):
         self.state = 'back'
         self.approver_id = None
         print
-        self.env['asset_management.back_to_store'].create({'back_id': 'aaaaaaaa', 'state': 'ass_admin', 'approver_id':
+        self.env['asset_management.back_to_store'].create({'state': 'ass_admin', 'approver_id':
             self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0].id})
         back = self.env['asset_management.back_to_store'].search([])[-1]
         for sn in self.SN:
@@ -557,7 +557,7 @@ class equipment_get(models.Model):
         self.state = 'back'
         self.approver_id = None
         print
-        self.env['asset_management.back_to_store'].create({'back_id':'aaaaaaaa','state':'ass_admin','approver_id': self.env['res.groups'].search([('name','=',u'资产管理员')],limit=1).users[0].id})
+        self.env['asset_management.back_to_store'].create({'state':'ass_admin','approver_id': self.env['res.groups'].search([('name','=',u'资产管理员')],limit=1).users[0].id})
         back = self.env['asset_management.back_to_store'].search([])[-1]
         for sn in self.SN:
             if sn.state == u'领用':
@@ -732,7 +732,7 @@ class equipment_it_apply(models.Model):
         self.state = 'back'
         self.approver_id = None
         print
-        self.env['asset_management.back_to_store'].create({'back_id': 'aaaaaaaa', 'state': 'ass_admin', 'approver_id':
+        self.env['asset_management.back_to_store'].create({'state': 'ass_admin', 'approver_id':
             self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0].id,'SN':[[6,0,self.SN.ids]]},)
         back = self.env['asset_management.back_to_store'].search([])[-1]
         for sn in self.SN:

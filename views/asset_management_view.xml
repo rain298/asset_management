@@ -56,7 +56,7 @@
             <field name="name">equipment_storage.tree</field>
             <field name="model">asset_management.equipment_storage</field>
             <field name="arch" type="xml">
-                <tree string = 'equipment_storge' delete = "false" create="false">
+                <tree string = 'equipment_storge' delete = "false" >
                     <field name="storage_id" string = "入库单号"/>
                     <field name="user_id" string="申请人"/>
                     <field name="approver_id" string = "审批人"/>
