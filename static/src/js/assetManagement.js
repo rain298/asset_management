@@ -79,7 +79,7 @@ openerp.asset_management=function(instance){
             var n=(uid==1?2:0);
             this.l=n;
             var obj={
-                "所有的设备":[1+n,2+n,3+n,5+n],
+                // "所有的设备":[1+n,2+n,3+n,5+n],
                 "库存中的设备":[2+n,3+n,5+n],
                 "借用设备":[4+n],
                 "领用设备":[4+n],

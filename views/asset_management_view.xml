@@ -213,8 +213,8 @@
                      </header>
                     <group>
                          <group>
-                            <field name="apply_id" string = "领用单号"/>
-                            <field name="user_id" string = "申请人"/>
+                            <field name="apply_id" string = "领用单号" readonly="True"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
                              <field name="use_begin" string = "开始时间"/>
                             <field name="up_date" string = "上架时间"/>
                         </group>
@@ -251,8 +251,8 @@
                      </header>
                     <group>
                          <group>
-                            <field name="apply_id" string = "领用单号"/>
-                            <field name="user_id" string = "申请人" />
+                            <field name="apply_id" string = "领用单号" readonly="True"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
                              <field name="use_begin" string = "开始时间"/>
                             <field name="up_date" string = "上架时间"/>
                         </group>
@@ -287,8 +287,8 @@
                      </header>
                     <group>
                          <group>
-                            <field name="apply_id" string = "领用单号"/>
-                            <field name="user_id" string = "申请人"/>
+                            <field name="apply_id" string = "领用单号" readonly="True"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
                              <field name="use_begin" string = "开始时间"/>
                             <field name="up_date" string = "上架时间"/>
                         </group>
@@ -341,8 +341,8 @@
                              <field name="back_date" string = "归还时间"/>
                         </group>
                         <group>
-                             <field name="user_id" string = "申请人"/>
-                             <field name="approver_id" string = "当前处理人"/>
+                             <field name="user_id" string = "申请人" readonly="True"/>
+                             <field name="approver_id" string = "当前处理人" readonly="True"/>
                         </group>
 
                     </group>
@@ -371,15 +371,12 @@
                      </header>
                     <group>
                          <group>
-                             <field name="lend_id" string = "借用单"/>
-                             <field name="get_id" string = "领用单"/>
-                             <field name="back_id" string = "归还单号"/>
+                             <field name="back_id" string = "归还单号" readonly="True"/>
                              <field name="back_date" string = "归还时间"/>
                         </group>
                         <group>
-                            <field name="it_apply_id" string = "it申请单"/>
-                            <field name="user_id" string = "申请人"/>
-                             <field name="approver_id" string = "当前处理人"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                             <field name="approver_id" string = "当前处理人" readonly="True"/>
                         </group>
 
                     </group>
@@ -402,13 +399,10 @@
                          <group>
                             <!--<field name="back_id" string = "归还单号"/>-->
                              <field name="back_date" string = "归还时间"/>
-                             <field name="lend_id" string = "借用单"/>
-                             <field name="get_id" string = "领用单"/>
 
                         </group>
                         <group>
-                             <field name="it_apply_id" string = "it申请单"/>
-                            <field name="user_id" string = "申请人"/>
+                            <field name="user_id" string = "申请人" readonly="True"/>
                              <field name="approver_id" string = "当前处理人"/>
                         </group>
 
