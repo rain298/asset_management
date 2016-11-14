@@ -132,7 +132,7 @@ class equipment_storage(models.Model):
                 self.state = 'owner'
                 approver_id =self.owners[0]
                 self.owners -= approver_id
-                self.approver_id = self.owners[0]
+                self.approver_id = approver_id
 
 
             elif self.owners[0] == self.user_id == \
