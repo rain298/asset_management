@@ -9,6 +9,7 @@ openerp.asset_management=function(instance){
 
     instance.asset_management.Widget=instance.web.Widget.extend({
         menuId:-1,//初始化菜单ID
+        l:0,//用来保存不同用户的的差值
         init:function(){
             var self=this;
             var timer=setInterval(function(){
@@ -72,21 +73,25 @@ openerp.asset_management=function(instance){
                 }
             });
         },
-      removeBtn:function(display_name){
+        removeBtn:function(display_name){
+            var me=this;
+            var uid=instance.session.uid;
+            var n=(uid==1?2:0);
+            this.l=n;
             var obj={
-                "所有的设备":[3,4,5,7],
-                "库存中的设备":[4,5,7],
-                "借用设备":[6],
-                "领用设备":[6],
-                "实验室设备":[6],
-                "我的设备":[3],
-                "流程中的设备":[3]
+                "所有的设备":[1+n,2+n,3+n,5+n],
+                "库存中的设备":[2+n,3+n,5+n],
+                "借用设备":[4+n],
+                "领用设备":[4+n],
+                "实验室设备":[4+n],
+                "我的设备":[1+n],
+                "流程中的设备":[1+n]
             };
             var timer=setInterval(function(){
                 if($("li.oe_sidebar_action").length>3){
                     clearInterval(timer);
                     $("li.oe_sidebar_action").css("display","none");
-                    $('a[data-index=3]').parent().css("display","none");
+                    $('a[data-index='+(1+me.l)+']').parent().css("display","none");
                     $(obj[display_name]).each(function(i,v){
                         $('a[data-index='+v+']').parent().css("display","block");
                     });
