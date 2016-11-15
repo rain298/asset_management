@@ -108,7 +108,7 @@
 
                     <footer>
                         <button name="subscribe" type="object"
-                                string="选择保存" class="oe_highlight"/>
+                                string="保存为草稿" class="oe_highlight"/>
                         or
                         <button special="cancel" string="取消提单"/>
                     </footer>
@@ -230,7 +230,7 @@
                     </group>
                     <footer>
                         <button name="subscribe" type="object"
-                                string="直接提交" class="oe_highlight"/>
+                                string="保存为草稿" class="oe_highlight"/>
                         or
                         <button special="cancel" string="取消提单"/>
                     </footer>
@@ -244,8 +244,8 @@
                 <form string="equipment_apply Form" create="false" delete = "false" >
                      <header>
                          <button name="action_to_confirm" type="object" string="提交" states="demander" class="oe_highlight" />
-                        <button name="action_to_next" type="object" string="同意" states="ass_admin,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
-                        <button name="action_to_demander" type="object" string="拒绝" states="ass_admin,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
+                        <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
+                        <button name="action_to_demander" type="object" string="拒绝" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
                          <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                      </header>
@@ -351,7 +351,7 @@
                     </group>
                     <footer>
                         <button name="subscribe" type="object"
-                                string="选择保存" class="oe_highlight"/>
+                                string="保存为草稿" class="oe_highlight"/>
                         or
                         <button special="cancel" string="取消提单"/>
                     </footer>
