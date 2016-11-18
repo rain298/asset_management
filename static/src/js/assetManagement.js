@@ -41,6 +41,7 @@ openerp.asset_management=function(instance){
                         self.addBtn(title);//添加自定义按钮
                         self.removeBtn(title);//删除按钮
                         self.menuId=targetSpan.parent("a").attr("data-menu");
+                        self.search(title);//添加搜索按钮
                     }
                 }
             },100);
@@ -97,6 +98,40 @@ openerp.asset_management=function(instance){
                     });
                 }
             },100);
+        },
+        search:function(t){
+            if(t=="所有的设备"||t=="库存中的设备"){
+                var self=this;
+                var seachKey="";
+                var keys={"apply_ids":true, "create_uid":true, "create_date":false,
+                    "get_ids":true, "id":false, "write_uid":true, "write_date":false,
+                    "lend_ids":true, "storage_id":true, "company":false, "note":true,
+                    "area":true, "machine_room":true, "floor":true, "sn":true, "seat":true,
+                    "owner":true, "cabinet_number":true, "state":false, "firms":true,
+                    "unit_type":true, "equipment_source":true, "equipment_status":false,
+                    "equipment_use":false, "device_type":true, "asset_number":true,
+                    "start_u_post":true};
+                var $searchMH=$('<button type="button">模糊搜索</button>');
+                $('.oe_view_manager_view_search').append($searchMH);
+                $('.oe_view_manager_view_search').on("keyup",".oe_searchview_input",function(){
+                    seachKey=$(this).html();
+                });
+                $searchMH.click(function(){
+                    var n=0;
+                    $("form li:first .searchview_extended_prop_field option").each(function(i,v){
+                        var optionVal= $(v).val();
+                        if(keys[optionVal]){
+                            $("form li:eq("+n+") .searchview_extended_prop_field").val(optionVal);
+                            $("form li:eq("+n+") .searchview_extended_prop_field").trigger("change");
+                            $("form li:eq("+n+") .searchview_extended_prop_op").val("ilike");
+                            $("form li:eq("+n+") .searchview_extended_prop_value>input.field_char").val(seachKey);
+                            $('.oe_add_condition').trigger("click");
+                            n++;
+                        }
+                    });
+                    $("form button.oe_apply:first").trigger("submit");
+                });
+            }
         },
         start:function(){
         //暂时不需要
