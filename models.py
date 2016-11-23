@@ -450,7 +450,7 @@ class equipment_get(models.Model):
                 self.owners |= sn.owner
 
         if len(self.owners) ==1:
-            if  (self.owners[0] == self.user_id or self.owners[0] == self.env['res.groups'].search([('name','=',u'资产管理员')],limit=1).users[0]) and self.user_id != self.env['res.groups'].search(['name','=',u'资产管理员'],limit=1):
+            if  (self.owners[0] == self.user_id or self.owners[0] == self.env['res.groups'].search([('name','=',u'资产管理员')],limit=1).users[0]) and self.user_id != self.env['res.groups'].search([('name','=',u'资产管理员')],limit=1):
                 self.state = 'ass_admin'
                 self.approver_id = self.env['res.groups'].search([('name','=',u'资产管理员')],limit=1).users[0]
 
@@ -723,7 +723,7 @@ class equipment_it_apply(models.Model):
         self.env['asset_management.it_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'拒绝', 'IT_id': self.id})
         if self.approver_id:
-            data = [ self.storage_id,u'IT环境申请被退回']
+            data = [ self.apply_id,u'IT环境申请被退回']
             device = self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')], limit=1)
             device.send_email([self.approver_id], data)
 
@@ -892,3 +892,10 @@ class back_examine(models.Model):
     ], string=u"通过")
     back_id = fields.Many2one('asset_management.back_to_store', string='设备归还单')
     reason = fields.Char(string='原因')
+class test(models.Model):
+    _name = 'asset_management.test'
+    sequence = 30000
+
+    name= fields.Char()
+
+    #user_id = fields.Many2one('res.users', string=u"申请人",required=True)

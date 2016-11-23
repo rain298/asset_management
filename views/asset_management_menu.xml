@@ -314,7 +314,17 @@
             <field name="view_id" ref="all_asset_management_form_view" />
             <field name="act_window_id" ref="all_asset_info_action" />
         </record>
+<record id="test_action" model="ir.actions.act_window" >
+            <field name="name">test</field>
+            <field name="res_model">asset_management.test</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
 
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">创建新的test
+                </p>
+            </field>
+        </record>
         <!-- top level menu: no parent -->
         <menuitem id="main_asset_management_menu" name="Asset management"/>
         <!-- A first level in the left side menu is needed before using action= attribute -->
@@ -349,6 +359,7 @@
         <menuitem id="all_back_menu" name="back Menu"  parent="main_asset_management_menu"/>
         <menuitem id="pending_backing_menu" name="backing Menu" parent="all_back_menu" action="back_to_store_action" />
         <menuitem id="processed_back_menu" name="processed backing Menu" parent="all_back_menu" action="processed_back_to_store_action" />
+        <menuitem id="test_menu" name="test Menu" parent="all_back_menu" action="test_action" />
 
     </data>
 </openerp>
