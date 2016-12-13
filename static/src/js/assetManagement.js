@@ -22,7 +22,7 @@ openerp.asset_management=function(instance){
                             clearInterval(timer);
                             self.addAction(display_name);
                             watch(action_manager,"inner_action",function(pro,action,newVal,oldVal){
-                                self.addAction(newVal.display_name);
+                                newVal&&self.addAction(newVal.display_name);
                             });
                         }
                     }
