@@ -474,27 +474,7 @@
                     view_id="back_to_store_create_form_view"
                     target="new"
                     key2="client_action_multi"/>
-        <record model="ir.ui.view" id="test_view">
-            <field name="name">test.form</field>
-            <field name="model" >asset_management.test</field>
-            <field name="arch" type="xml">
-                <form string="back Form" >
 
-                    <group>
-                         <group>
-                             <!--<field name="back_id" string = "归还单号"/>-->
-                             <field name="id" />
-                        </group>
-                        <group>
-                             <field name="name" />
-
-                        </group>
-
-                    </group>
-
-                </form>
-            </field>
-        </record>
         <record model="ir.ui.view" id="use_record_tree_view">
             <field name="name">use_record.tree</field>
             <field name="model">asset_management.use_record</field>

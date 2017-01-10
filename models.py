@@ -1026,11 +1026,3 @@ class use_record(models.Model):
     approver_id = fields.Many2one("res.users", string="申请人信息")
     operate = fields.Char(string="设备操作记录")
 
-
-class test(models.Model):
-    _name = 'asset_management.test'
-    sequence = 30000
-
-    name= fields.Char()
-
-    #user_id = fields.Many2one('res.users', string=u"申请人",required=True)
