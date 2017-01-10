@@ -11,6 +11,7 @@ class equipment_info(models.Model):
 
     sn = fields.Char(string=u"序列号",required=True)
     firms = fields.Char( string=u"设备厂商",required=True)
+    device_name = fields.Char(string="设备名称", required=True)
     device_type = fields.Char(string=u"设备类型",required=True)
     asset_number = fields.Char(string=u"资产编号",required=True)
     unit_type = fields.Char(string=u"设备型号",required=True)
@@ -37,8 +38,8 @@ class equipment_info(models.Model):
         (u'IT环境',u'IT环境'),
         (u'归还',u'归还'),
     ],string='状态',default=u'待入库')
-    owner = fields.Many2one('res.users',string=u"归属人",required=True)
-    company = fields.Boolean(string=u"公司资产",required=True)
+    owner = fields.Many2one('res.users',string=u"归属人", required=True)
+    company = fields.Boolean(string=u"公司资产")
     note = fields.Char(string=u"备注")
     floor = fields.Char(string=u"存放楼层")
     area = fields.Char(string=u"存放区域")
@@ -83,6 +84,11 @@ class equipment_info(models.Model):
 class equipment_storage(models.Model):
     _name = 'asset_management.equipment_storage'
     _rec_name = 'storage_id'
+    _inherit = ['ir.needaction_mixin']
+
+    @api.model
+    def _needaction_domain_get(self):
+        return [('approver_id.id', '=', self.env.uid)]
 
     @api.multi
     def _default_SN(self):
@@ -96,9 +102,11 @@ class equipment_storage(models.Model):
     state = fields.Selection([
         ('demander', u"需求方申请"),
         ('ass_admin', u"资产管理员"),
-        ('ass_admin_manager', u"MA主管"),
         ('owner', u"资产归属人"),
-        ('done',u'完成')
+        ('ass_admin_manager', u"MA主管"),
+        ('ass_admin_detection', u"资产管理员检测确认"),
+        ('done',u'完成'),
+        ('cancel',u'已作废'),
     ],string=u"状态",required=True,default='demander')
     owners = fields.Many2many('res.users', string=u'设备归属人', ondelete='set null')
     store_exam_ids = fields.One2many('asset_management.entry_store_examine', 'store_id', string='审批记录')
@@ -169,6 +177,16 @@ class equipment_storage(models.Model):
             device.send_email([self.approver_id],data)
 
     @api.multi
+    def action_to_cancel(self):
+        self.state = 'demander'
+        self.env['asset_management.get_examine'].create(
+            {'approver_id': self.approver_id.id, 'result': u'拒绝', 'store_id': self.id})
+        self.approver_id = self.user_id
+        data = [self.storage_id,u'入库申请被退回']
+        device = self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')], limit=1)
+        device.send_email([self.approver_id], data)
+
+    @api.multi
     def action_to_next(self):
         self.env['asset_management.entry_store_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'通过', 'store_id': self.id})
@@ -190,10 +208,18 @@ class equipment_storage(models.Model):
             self.approver_id = approver_id
 
         elif self.state == 'ass_admin_manager':
+            self.state = 'ass_admin_detection'
+            self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0]
+
+        elif self.state == 'ass_admin_detection':
+            for sn in self.SN:
+                self.env['asset_management.use_record'].create(
+            {'approver_id': self.approver_id.id,'operate':'已入库' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'已入库'
             self.approver_id = None
+
         if self.approver_id:
             data = [u'入库申请', self.storage_id]
             device = self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')], limit=1)
@@ -209,12 +235,22 @@ class equipment_storage(models.Model):
         device = self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')], limit=1)
         device.send_email([self.approver_id], data)
 
-
+    @api.multi
+    def action_to_cancel(self):
+        self.state = 'cancel'
+        for device in self.SN:
+                device.state = u'已入库'
+        self.approver_id = None
 
 
 class equipment_lend(models.Model):
     _name = 'asset_management.equipment_lend'
     _rec_name = 'lend_id'
+    _inherit = ['ir.needaction_mixin']
+
+    @api.model
+    def _needaction_domain_get(self):
+        return [('approver_id.id', '=', self.env.uid)]
 
     def _default_SN(self):
         return self.env['asset_management.equipment_info'].browse(self._context.get('active_ids'))
@@ -226,7 +262,7 @@ class equipment_lend(models.Model):
     lend_id = fields.Char(string=u"借用单号")
     user_id = fields.Many2one('res.users', string=u"申请人",default=lambda self: self.env.user,required=True)
     #user_id = fields.Many2one('res.users', string=u"申请人",required=True)
-    approver_id = fields.Many2one('res.users',default=lambda self: self.env.user,string=u"审批人",)
+    approver_id = fields.Many2one('res.users',default=lambda self: self.env.user, string=u"审批人",)
     SN = fields.Many2many('asset_management.equipment_info',"lend_equipment_ref", string=u"设备SN",default=_default_SN,required=True)
     state = fields.Selection([
             ('demander', u"需求方申请"),
@@ -236,8 +272,10 @@ class equipment_lend(models.Model):
             ('dem_leader_manager', u"需求方直属主管"),# 副总裁级
             ('ass_director', u"资产管理部门负责人"),
             ('ass_admin_manager', u"资产管理部门主管"),  # 副总裁级MA
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done', u'结束'),
-        ('back', u'归还')
+        ('back', u'归还'),
+        ('cancel',u'已作废'),
     ], string=u"状态", required=True,default='demander')
     lend_date = fields.Date(string=u"借用日期",required=True)
     promise_date = fields.Date(string=u"承诺归还日期",required=True)
@@ -351,6 +389,13 @@ class equipment_lend(models.Model):
             self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理部门主管')], limit=1).users[0]
 
         elif self.state == 'ass_admin_manager':
+            self.state = 'ass_admin_detection'
+            self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0]
+
+        elif self.state == 'ass_admin_detection':
+            for sn in self.SN:
+                self.env['asset_management.use_record'].create(
+            {'approver_id': self.approver_id.id,'operate':'借用' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'借用'
@@ -392,9 +437,18 @@ class equipment_lend(models.Model):
             if sn.state == u'借用':
                 back.SN |= sn
 
+    @api.multi
+    def action_to_cancel(self):
+        self.state = 'cancel'
+        for device in self.SN:
+                device.state = u'已入库'
+        self.approver_id = None
+
+
 class equipment_get(models.Model):
     _name = 'asset_management.equipment_get'
     _rec_name = 'get_id'
+    _inherit = ['ir.needaction_mixin']
 
     def _default_SN(self):
         return self.env['asset_management.equipment_info'].browse(self._context.get('active_ids'))
@@ -409,14 +463,20 @@ class equipment_get(models.Model):
              ('dem_leader', u"需求方直属部门领导"),
              ('ass_director', u"资产管理部门负责人"),
              ('ass_admin_manager', u"资产管理部门主管"),  # 副总裁级MA
+             ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'结束'),
-        ('back',u'归还')
+        ('back',u'归还'),
+        ('cancel',u'已作废'),
 
     ], string=u"状态", required=True,default='demander')
     get_date = fields.Date(string=u"领用日期",)
     get_purpose = fields.Char(string=u"领用目的",required=True)
-    owners = fields.Many2many('res.users',string=u'设备归属人',ondelete = 'set null')
+    owners = fields.Many2many('res.users', string=u'设备归属人', ondelete = 'set null')
     get_exam_ids = fields.One2many('asset_management.get_examine','get_id',string='审批记录')
+
+    @api.model
+    def _needaction_domain_get(self):
+        return [('approver_id.id', '=', self.env.uid)]
 
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('asset_management.equipment_info')
@@ -531,15 +591,22 @@ class equipment_get(models.Model):
             self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理部门主管')], limit=1).users[0]
 
         elif self.state == 'ass_admin_manager':
+            self.state = 'ass_admin_detection'
+            self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0]
+
+        elif self.state == 'ass_admin_detection':
+            for sn in self.SN:
+                self.env['asset_management.use_record'].create(
+                {'approver_id': self.approver_id.id,'operate':'领用' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'领用'
             self.approver_id = self.user_id
+
         if self.approver_id:
             data = [u'领用申请', self.get_id]
             device = self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')], limit=1)
             device.send_email([self.approver_id], data)
-
 
     @api.multi
     def action_to_demander(self):
@@ -563,9 +630,29 @@ class equipment_get(models.Model):
             if sn.state == u'领用':
                 back.SN |= sn
 
+    @api.multi
+    def action_to_cancel(self):
+        self.state = 'cancel'
+        for device in self.SN:
+                device.state = u'已入库'
+        self.approver_id = None
+
+    @api.multi
+    def action_to_cancel(self):
+        self.state = 'cancel'
+        for device in self.SN:
+                device.state = u'已入库'
+        self.approver_id = None
+
+
 class equipment_it_apply(models.Model):
     _name = 'asset_management.equipment_it_apply'
     _rec_name = 'apply_id'
+    _inherit = ['ir.needaction_mixin']
+
+    @api.model
+    def _needaction_domain_get(self):
+        return [('approver_id.id', '=', self.env.uid)]
 
     def _default_SN(self):
         return self.env['asset_management.equipment_info'].browse(self._context.get('active_ids'))
@@ -586,8 +673,10 @@ class equipment_it_apply(models.Model):
         ('dem_leader_manager', u"需求方直属部门总经理"),
         ('ass_director', u"资产管理部门负责人"),
         ('ass_admin_manager', u"资产管理部门主管"),  # 副总裁级MA
+        ('ass_admin_detection', u"资产管理员检测确认"),
         ('done', u'结束'),
-        ('back', u'归还')
+        ('back', u'归还'),
+        ('cancel',u'已作废'),
     ], string=u"状态", required=True, default='demander')
     use_begin = fields.Date(string=u"使用开始时间",required=True)
     use_over = fields.Date(string=u"使用结束时间",required=True)
@@ -690,7 +779,6 @@ class equipment_it_apply(models.Model):
                 self.state = 'dem_leader_manager'
                 self.approver_id = self.user_id.employee_ids[0].department_id.parent_id.manager_id.user_id
 
-
         elif self.state == 'dem_leader':  # 到哪个状态说明,哪个状态与申请人不重合
             self.state = 'dem_leader_manager'
             self.approver_id = self.user_id.employee_ids[0].department_id.parent_id.manager_id.user_id
@@ -705,8 +793,14 @@ class equipment_it_apply(models.Model):
             self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理部门主管')], limit=1).users[0]
 
         elif self.state == 'ass_admin_manager':
-            self.state = 'done'
+            self.state = 'ass_admin_detection'
+            self.approver_id = self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0]
 
+        elif self.state == 'ass_admin_detection':
+            for sn in self.SN:
+                self.env['asset_management.use_record'].create(
+            {'approver_id': self.approver_id.id,'operate':'IT环境申请' ,'sn':sn.id})
+            self.state = 'done'
             for device in self.SN:
                 device.state = u'IT环境'
             self.approver_id = self.user_id
@@ -739,10 +833,22 @@ class equipment_it_apply(models.Model):
             if sn.state == u'IT环境':
                 back.SN |= sn
 
+    @api.multi
+    def action_to_cancel(self):
+        self.state = 'cancel'
+        for device in self.SN:
+                device.state = u'已入库'
+        self.approver_id = None
+
 
 class back_to_store(models.Model):
     _name = 'asset_management.back_to_store'
     _rec_name = 'back_id'
+    _inherit = ['ir.needaction_mixin']
+
+    @api.model
+    def _needaction_domain_get(self):
+        return [('approver_id.id', '=', self.env.uid)]
 
     def _default_SN(self):
         return self.env['asset_management.equipment_info'].browse(self._context.get('active_ids'))
@@ -760,7 +866,8 @@ class back_to_store(models.Model):
 
         ('demander', u"归还方申请"),
         ('ass_admin', u"资产管理员"),
-        ('done', u'结束')
+        ('done', u'结束'),
+        ('cancel',u'已作废'),
     ], string=u"状态", required=True, default='demander')
     back_date = fields.Date(string=u"归还时间",)
     back_exam_ids = fields.One2many('asset_management.back_examine', 'back_id', string='审批记录')
@@ -801,6 +908,9 @@ class back_to_store(models.Model):
     def action_to_next(self):
         self.env['asset_management.back_examine'].create(
             {'approver_id': self.approver_id.id, 'result': u'通过', 'back_id': self.id})
+        for sn in self.SN:
+                self.env['asset_management.use_record'].create(
+            {'approver_id': self.approver_id.id,'operate':'已入库' ,'sn':sn.id})
         self.state = 'done'
         for sn in self.SN:
             sn.state = u'已入库'
@@ -814,6 +924,11 @@ class back_to_store(models.Model):
         data = [u'设备归还申请被退回', self.back_id]
         device = self.env['asset_management.equipment_info'].search([('state', '=', u'待入库')], limit=1)
         self.approver_id = self.user_id
+
+    @api.multi
+    def action_to_cancel(self):
+        self.state = 'cancel'
+        self.approver_id = None
 
 
 class entry_store_examine(models.Model):
@@ -830,6 +945,7 @@ class entry_store_examine(models.Model):
                                 ],string=u"通过")
     store_id = fields.Many2one('asset_management.equipment_storage',string='入库单')
     reason = fields.Char(string='原因')
+
 
 class lend_examine(models.Model):
     _name = 'asset_management.lend_examine'
@@ -848,6 +964,7 @@ class lend_examine(models.Model):
     lend_id = fields.Many2one('asset_management.equipment_lend', string='借用单')
     reason = fields.Char(string='原因')
 
+
 class get_examine(models.Model):
     _name = 'asset_management.get_examine'
     # _rec_name = 'exam_num'
@@ -862,6 +979,7 @@ class get_examine(models.Model):
     ], string=u"通过")
     get_id = fields.Many2one('asset_management.equipment_get', string='领用')
     reason = fields.Char(string='原因')
+
 
 class it_examine(models.Model):
     _name = 'asset_management.it_examine'
@@ -878,6 +996,7 @@ class it_examine(models.Model):
     IT_id = fields.Many2one('asset_management.equipment_it_apply', string='IT环境申请单')
     reason = fields.Char(string='原因')
 
+
 class back_examine(models.Model):
     _name = 'asset_management.back_examine'
     # _rec_name = 'exam_num'
@@ -892,6 +1011,22 @@ class back_examine(models.Model):
     ], string=u"通过")
     back_id = fields.Many2one('asset_management.back_to_store', string='设备归还单')
     reason = fields.Char(string='原因')
+
+
+class use_record(models.Model):
+    _name = 'asset_management.use_record'
+
+    sn = fields.Many2one("asset_management.equipment_info", string=u"序列号")
+    firms = fields.Char(related="sn.firms", string=u"设备厂商", store='True')
+    device_name = fields.Char(related="sn.device_name", string=u"设备名称", store='True')
+    device_type = fields.Char(related="sn.device_type", string=u"设备类型", store='True')
+    asset_number = fields.Char(related="sn.asset_number", string=u"资产编号", store='True')
+    unit_type = fields.Char(related="sn.unit_type", string=u"设备型号", store='True')
+    equipment_source = fields.Char(related="sn.equipment_source", string=u"设备来源", store='True')
+    approver_id = fields.Many2one("res.users", string="申请人信息")
+    operate = fields.Char(string="设备操作记录")
+
+
 class test(models.Model):
     _name = 'asset_management.test'
     sequence = 30000

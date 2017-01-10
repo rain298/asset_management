@@ -12,6 +12,7 @@
                     <group>
                         <group>
                                 <field name="sn" string = "序列号"/>
+                                <field name="device_name" string = "设备名称"/>
                                 <field name="firms" string = "设备厂商"/>
                                 <field name="device_type" string = "设备类型"/>
                                 <field name="asset_number" string = "资产编号"/>
@@ -22,7 +23,7 @@
                                 <field name="owner" string = "归属人"/>
                         </group>
                         <group>
-                                <field name="company" string = "公司资产"/>
+                                <field name="company" string = "公司资产" />
                                 <field name="note" string = "备注"/>
                                 <field name="floor" string = "存放楼层"/>
                                 <field name="area" string = "存放区域"/>
@@ -30,7 +31,7 @@
                                 <field name="machine_room" string = "存放机房"/>
                                 <field name="cabinet_number" string = "机柜编号"/>
                                 <field name="start_u_post" string = "起始U位"/>
-                                <field name="state" string="状态"></field>
+                                <field name="state" string="状态"/>
                         </group>
 
                     </group>
@@ -41,12 +42,13 @@
             <field name="name">equipment.form</field>
             <field name="model" >asset_management.equipment_info</field>
             <field name="arch" type="xml">
-                <form string="equipment Form" create="false"  >
+                <form string="equipment Form" create="false"  edit="false">
                      <header>
                      </header>
                     <group>
                         <group>
                                 <field name="sn" string = "序列号"/>
+                                <field name="device_name" string = "设备名称"/>
                                 <field name="firms" string = "设备厂商"/>
                                 <field name="device_type" string = "设备类型"/>
                                 <field name="asset_number" string = "资产编号"/>
@@ -65,7 +67,7 @@
                                 <field name="machine_room" string = "存放机房"/>
                                 <field name="cabinet_number" string = "机柜编号"/>
                                 <field name="start_u_post" string = "起始U位"/>
-                                <field name="state" string="状态"></field>
+                                <field name="state" string="状态"/>
                         </group>
                     </group>
                 </form>
@@ -77,10 +79,13 @@
             <field name="arch" type="xml" >
                 <tree create="false" >
                     <field name="sn" string = "序列号"/>
+                    <field name="device_name" string = "设备名称"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <field name="equipment_source" string = "设备来源"/>
                     <field name="equipment_status" string = "设备状态"/>
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="state" string="状态"></field>
+                    <field name="state" string="状态"/>
                 </tree>
             </field>
         </record>
@@ -90,10 +95,14 @@
             <field name="arch" type="xml" >
                 <tree>
                     <field name="sn" string = "序列号"/>
+                    <field name="device_name" string = "设备名称"/>
+                    <field name="unit_type" string = "设备型号"/>
+                    <field name="firms" string = "设备厂商"/>
+                    <field name="equipment_source" string = "设备来源"/>
                     <field name="equipment_status" string = "设备状态"/>
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
-                    <field name="state" string="状态"></field>
+                    <field name="state" string="状态"/>
                 </tree>
             </field>
         </record>
@@ -102,12 +111,21 @@
             <field name="model">asset_management.equipment_info</field>
             <field name="arch" type="xml">
                 <search  string="Search_device">
-                    <field name="sn" string="序列号"/>
-                    <field name="owner" string="归属人"/>
-                    <field name="unit_type" string="设备型号"/>
                     <group expand="0" string="分组">
+                        <filter string="序列号" name="sn" context="{'group_by':'sn'}"/>
+                        <filter string="设备名称" name="device_name" context="{'group_by':'device_name'}"/>
+                        <filter string="设备厂商" name="firms" context="{'group_by':'firms'}"/>
+                        <filter string="设备来源" name="equipment_source" context="{'group_by':'equipment_source'}"/>
+                        <filter string="设备状态" name="equipment_status" context="{'group_by':'equipment_status'}"/>
+                        <filter string="归属人" name="owner" context="{'group_by':'owner'}"/>
+                        <filter string="设备用途" name="equipment_use" context="{'group_by':'equipment_use'}"/>
+                        <filter string="状态" name="state" context="{'group_by':'state'}"/>
                         <filter string="资产类型" name="device_type" context="{'group_by':'device_type'}"/>
                         <filter string="厂商" name="firms" context="{'group_by':'firms'}"/>
+                    </group>
+                    <group expand="1" string="筛选器">
+                    <filter string="3750" name="sn" domin="[('sn','=',3750)]"/>
+                    <filter string="3650" name="sn" domin="[('sn','=',3650)]"/>
                     </group>
                 </search>
             </field>
@@ -139,7 +157,7 @@
                     <field name="promise_date" string = "承诺归还日期"/>
                     <field name="actual_date" string = "实际归还日期"/>
                     <field name="lend_purpose" string = "借用目的"/>
-                        <field name="SN" string = "设备" mode="tree"/>
+                    <field name="SN" string = "设备" mode="tree"/>
                     </group>
                     <footer>
                         <button name="subscribe" type="object"
@@ -161,6 +179,7 @@
                         <button name="action_to_next" type="object" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" string="同意" class="oe_highlight" />
                          <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
                          <button name="action_to_renew" type="object" states ='done' string="续借"  class="oe_highlight" />
+                         <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
                          <field name="state" widget="statusbar"/>
                      </header>
                     <group>
@@ -196,14 +215,15 @@
                      <header>
                         <field name="state" widget="statusbar"/>
                      </header>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                     <group>
-                    <!--<field name="SN" string = "设备SN" widget = 'many2many_tags' />-->
-                    <!--<field name="SN" string = "设备SN" widget = 'many2many_tags' mode = 'tree'/>-->
                     <field name="user_id" string = "申请人"/>
                     <field name="approver_id" string = "审批人"/>
                     <field name="lend_date" string = "借用日期"/>
                     <field name="promise_date" string = "承诺归还日期"/>
-                    <field name="actual_date" string = "实际归还日期"/>
+                     <field name="actual_date" string = "实际归还日期"/>
                     <field name="lend_purpose" string = "借用目的"/>
                     </group>
                     <group>

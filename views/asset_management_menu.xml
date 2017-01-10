@@ -20,18 +20,17 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name ="domain">['|',('store_exam_ids.approver_id','ilike',uid),('user_id','=',uid),('state','!=','demander')]</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备入库
-                </p>
-            </field>
+
         </record>
          <record id="processed_asset_storing_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+             <field name="sequence" eval="1"/>
             <field name="view_id" ref="asset_storage_tree_view" />
             <field name="act_window_id" ref="processed_asset_storing_action" />
         </record>
         <record id="processed_asset_storing_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="processed_asset_storage_form_view" />
             <field name="act_window_id" ref="processed_asset_storing_action" />
         </record>
@@ -63,11 +62,6 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name ="domain">[('approver_id','=',uid)]</field>
-
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备借用
-                </p>
-            </field>
         </record>
         <record id="asset_pending_lending_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -85,12 +79,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name ="domain">['|',('lend_exam_ids.approver_id','ilike',uid),('user_id','=',uid),('state','!=','demander')]</field>
-            <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备借用
-                </p>
-            </field>
+
         </record>
         <record id="asset_processed_lending_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -108,12 +97,10 @@
             <field name="res_model">asset_management.equipment_get</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
+            <field name ="domain">[('approver_id','=',uid)]</field>
+
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
             <!--<field name="view_id" ref="asset_get_form_view"/>-->
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备领用
-                </p>
-            </field>
         </record>
         <record id="asset_getting_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -133,10 +120,7 @@
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
             <field name="view_id" ref="asset_get_processed_form_view"/>
             <field name ="domain">['|',('get_exam_ids.approver_id','ilike',uid),('user_id','=',uid),('state','!=','demander')]</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备领用
-                </p>
-            </field>
+
         </record>
         <record id="processed_asset_getting_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -155,10 +139,7 @@
             <field name="view_mode">tree,form</field>
             <field name ="domain">['|',('apply_exam_ids.approver_id','ilike',uid),('user_id','=',uid),('state','!=','demander')]</field>
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-IT环境申请
-                </p>
-            </field>
+
         </record>
         <record id="processed_asset_apply_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -177,10 +158,7 @@
             <field name="view_mode">tree,form</field>
             <field name ="domain">[('approver_id','=',uid)]</field>
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-IT环境申请
-                </p>
-            </field>
+
         </record>
         <record id="pending_asset_apply_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -247,11 +225,13 @@
         </record>
            <record id="all_asset_info_action_tree" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+               <field name="sequence" eval="1"/>
             <field name="view_id" ref="all_asset_management_tree_view" />
             <field name="act_window_id" ref="all_asset_info_action" />
         </record>
         <record id="all_asset_info_action_form" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="all_asset_management_form_view" />
             <field name="act_window_id" ref="all_asset_info_action" />
         </record>
@@ -265,18 +245,17 @@
             <!--<field name="view_id" ref="asset_get_form_view"/>-->
             <!--<field name ="domain">管理员可以到</field>-->
             <field name ="domain">[('approver_id','=',uid)]</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备归还
-                </p>
-            </field>
+
         </record>
         <record id="backing_to_store_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
             <field name="view_id" ref="back_to_store_tree_view" />
             <field name="act_window_id" ref="back_to_store_action" />
         </record>
         <record id="backing_to_store_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
             <field name="view_id" ref="back_to_store_form_view" />
             <field name="act_window_id" ref="back_to_store_action" />
         </record>
@@ -288,10 +267,7 @@
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
             <!--<field name="view_id" ref="asset_get_processed_form_view"/>-->
             <field name ="domain">['|',('back_exam_ids.approver_id','ilike',uid),('user_id','=',uid),('state','!=','demander')]</field>
-            <field name="help" type="html">
-                <p class="oe_view_nocontent_create">创建新的流程-设备归还
-                </p>
-            </field>
+
         </record>
         <record id="processed_back_to_store_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
@@ -325,6 +301,24 @@
                 </p>
             </field>
         </record>
+
+        <record id="use_record_action" model="ir.actions.act_window">
+            <field name="name">设备使用记录</field>
+            <field name="res_model">asset_management.use_record</field>
+            <field name="view_type">form</field>
+            <field name="view_model">tree,form</field>
+        </record>
+        <!--<record id="use_record_action_tree" model="ir.actions.act_window.view">-->
+            <!--<field name="view_mode">tree</field>-->
+            <!--<field name="view_id" res="use_record_tree_view" />-->
+            <!--<field name="act_window_id" ref="use_record_action" />-->
+        <!--</record>-->
+        <!--<record id="use_record_action_form" model="ir.actions.act_window.view">-->
+            <!--<field name="view_mode">form</field>-->
+            <!--<field name="view_id" res="use_record_form_view"/>-->
+            <!--<field name="act_window_id" ref="use_record_action"/>-->
+        <!--</record>-->
+
         <!-- top level menu: no parent -->
         <menuitem id="main_asset_management_menu" name="Asset management"/>
         <!-- A first level in the left side menu is needed before using action= attribute -->
@@ -337,7 +331,6 @@
         <menuitem id="got_device_menu" name="got device" parent="device_menu" action="got_asset_info_action" />
         <menuitem id="it_apply_device_menu" name="IT applay device" parent="device_menu" action="IT_apply_asset_info_action" />
         <menuitem id="examing_device_menu" name="examing device" parent="device_menu" action="examing_asset_info_action" />
-
 
         <menuitem id="the_lending_menu" name="lending Menu"  parent="main_asset_management_menu"/>
         <menuitem id="all_pending_lending_menu" name="pending lend Menu" parent="the_lending_menu" action="asset_pending_lending_action" />
@@ -360,6 +353,9 @@
         <menuitem id="pending_backing_menu" name="backing Menu" parent="all_back_menu" action="back_to_store_action" />
         <menuitem id="processed_back_menu" name="processed backing Menu" parent="all_back_menu" action="processed_back_to_store_action" />
         <menuitem id="test_menu" name="test Menu" parent="all_back_menu" action="test_action" />
+
+        <menuitem id="all_use_record" name="设备使用记录" parent="main_asset_management_menu" groups="asset_management.group_ass_admin,asset_management.group_ass_director,asset_management.group_ass_admin_manager,base.group_system"/>
+        <menuitem id="use_record" name="设备使用记录" parent="all_use_record" action="use_record_action"/>
 
     </data>
 </openerp>

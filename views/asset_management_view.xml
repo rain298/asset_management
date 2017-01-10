@@ -8,8 +8,10 @@
                 <form string="equipment_storage Form" create="false" delete = "false">
                      <header>
                         <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
+                        <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
                         <button name="action_to_demander" type="object" string="退回" states="ass_admin,owner,ass_admin_manager" class="oe_highlight" />
                         <button name="action_to_next" type="object" string="同意" states="ass_admin,owner,ass_admin_manager" class="oe_highlight" />
+                         <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
@@ -23,7 +25,7 @@
 
                     </group>
                     <group>
-                        <field name="SN" string = "设备" mode="tree"/>
+                        <field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]" mode="tree"/>
                          <field name="store_exam_ids" string="审批记录">
                              <tree string="审批记录" edit="false" create="false">
                                     <field name="approver_id" string = "审批人" />
@@ -45,6 +47,9 @@
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                         <group>
                             <field name="storage_id" string = "入库单号" readonly="True"/>
                         </group>
@@ -55,7 +60,7 @@
 
                     </group>
                     <group>
-                        <field name="SN" string = "设备" mode="tree"/>
+                        <field name="SN" string = "设备" />
                         <field name="store_exam_ids" string="审批记录">
                              <tree string="审批记录" edit="false" create="false">
                                     <field name="approver_id" string = "审批人" />
@@ -87,10 +92,12 @@
             <field name="arch" type="xml">
                 <form string="equipment_get Form" >
                     <header>
-                        <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                         <group>
                             <field name="get_id" string = "领用单号" readonly="True" />
                             <field name="user_id" string = "申请人" readonly="True"/>
@@ -125,6 +132,7 @@
                         <button name="action_to_demander" type="object" string="退回" states="ass_admin,ass_owner,dem_leader,ass_director,ass_admin_manager" class="oe_highlight" />
                         <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,ass_director,ass_admin_manager" class="oe_highlight" />
                         <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
+                        <button name="action_to_next" type="object" string="检测确认" states="ass_admin_detection" class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
@@ -163,6 +171,9 @@
                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                         <group>
                             <field name="get_id" string = "领用单号"/>
                             <field name="user_id" string = "申请人"/>
@@ -208,10 +219,12 @@
             <field name="arch" type="xml">
                 <form string="equipment_apply Form" >
                      <header>
-                         <button name="action_to_confirm" type="object" string="提交" states="demander" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                      </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                          <group>
                             <field name="apply_id" string = "领用单号" readonly="True"/>
                             <field name="user_id" string = "申请人" readonly="True"/>
@@ -247,6 +260,7 @@
                         <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
                         <button name="action_to_demander" type="object" string="拒绝" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
                          <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
+                         <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                      </header>
                     <group>
@@ -286,6 +300,9 @@
                         <field name="state" widget="statusbar"/>
                      </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                          <group>
                             <field name="apply_id" string = "领用单号" readonly="True"/>
                             <field name="user_id" string = "申请人" readonly="True"/>
@@ -332,10 +349,12 @@
             <field name="arch" type="xml">
                 <form string="back Form" >
                      <header>
-                         <button name="action_to_confirm" type="object" string="提交" states="damander" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                      </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                          <group>
                              <!--<field name="back_id" string = "归还单号"/>-->
                              <field name="back_date" string = "归还时间"/>
@@ -396,6 +415,9 @@
                         <field name="state" widget="statusbar"/>
                      </header>
                     <group>
+                    <group attrs="{'invisible': [('user_id','!=', 'uid')]}">
+                     <button name="action_to_cancel" type="object" states="demander,ass_owner,ass_admin,ass_admin_manager,dem_leader,ass_director,ass_admin_detection" string="取消申请" class="oe_highlight"/>
+                    </group>
                          <group>
                             <!--<field name="back_id" string = "归还单号"/>-->
                              <field name="back_date" string = "归还时间"/>
@@ -470,6 +492,46 @@
 
                     </group>
 
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="use_record_tree_view">
+            <field name="name">use_record.tree</field>
+            <field name="model">asset_management.use_record</field>
+            <field name="arch" type="xml">
+                <tree string ="use_record" create="false" delete = "false" edit = "false">
+                    <field name="sn" string="序列号"/>
+                    <field name="firms" string="设备厂商"/>
+                    <field name="device_name" string="设备名字"/>
+                    <field name="asset_number" string="资产编号"/>
+                    <field name="unit_type" stirng="设备型号"/>
+                    <field name="equipment_source" string="设备来源"/>
+                    <field name="approver_id" string="申请人信息"/>
+                    <field name="operate" string="设备操作记录"/>
+                </tree>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="use_record_form_view">
+            <field name="name">use_record.form</field>
+            <field name="model">asset_management.use_record</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                        <group>
+                        <field name="sn" string="序列号"/>
+                        <field name="firms" string="设备厂商"/>
+                        <field name="device_name" string="设备名字"/>
+                        <field name="asset_number" string="资产编号"/>
+                        </group>
+                        <group>
+                        <field name="unit_type" stirng="设备型号"/>
+                        <field name="equipment_source" string="设备来源"/>
+                        <field name="approver_id" string="申请人信息"/>
+                        <field name="operate" string="设备操作记录"/>
+                        </group>
+                        </group>
+                    </sheet>
                 </form>
             </field>
         </record>
