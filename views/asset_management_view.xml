@@ -257,8 +257,8 @@
                 <form string="equipment_apply Form" create="false" delete = "false" >
                      <header>
                          <button name="action_to_confirm" type="object" string="提交" states="demander" class="oe_highlight" />
-                        <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
                         <button name="action_to_demander" type="object" string="拒绝" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
+                         <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
                          <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
                          <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
@@ -486,7 +486,7 @@
                     <field name="asset_number" string="资产编号"/>
                     <field name="unit_type" stirng="设备型号"/>
                     <field name="equipment_source" string="设备来源"/>
-                    <field name="approver_id" string="申请人信息"/>
+                    <field name="user_id" string="申请人信息"/>
                     <field name="operate" string="设备操作记录"/>
                 </tree>
             </field>
@@ -507,7 +507,7 @@
                         <group>
                         <field name="unit_type" stirng="设备型号"/>
                         <field name="equipment_source" string="设备来源"/>
-                        <field name="approver_id" string="申请人信息"/>
+                        <field name="user_id" string="申请人信息"/>
                         <field name="operate" string="设备操作记录"/>
                         </group>
                         </group>

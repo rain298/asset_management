@@ -214,7 +214,7 @@ class equipment_storage(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'approver_id': self.approver_id.id,'operate':'已入库' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'已入库' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'已入库'
@@ -395,7 +395,7 @@ class equipment_lend(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'approver_id': self.approver_id.id,'operate':'借用' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'借用' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'借用'
@@ -597,7 +597,7 @@ class equipment_get(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-                {'approver_id': self.approver_id.id,'operate':'领用' ,'sn':sn.id})
+                {'user_id': self.user_id.id,'operate':'领用' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'领用'
@@ -799,7 +799,7 @@ class equipment_it_apply(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'approver_id': self.approver_id.id,'operate':'IT环境申请' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'IT环境申请' ,'sn':sn.id})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'IT环境'
@@ -910,7 +910,7 @@ class back_to_store(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'通过', 'back_id': self.id})
         for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'approver_id': self.approver_id.id,'operate':'已入库' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'已入库' ,'sn':sn.id})
         self.state = 'done'
         for sn in self.SN:
             sn.state = u'已入库'
@@ -1023,6 +1023,6 @@ class use_record(models.Model):
     asset_number = fields.Char(related="sn.asset_number", string=u"资产编号", store='True')
     unit_type = fields.Char(related="sn.unit_type", string=u"设备型号", store='True')
     equipment_source = fields.Char(related="sn.equipment_source", string=u"设备来源", store='True')
-    approver_id = fields.Many2one("res.users", string="申请人信息")
+    user_id = fields.Many2one("res.users", string="申请人信息")
     operate = fields.Char(string="设备操作记录")
 
