@@ -11,17 +11,20 @@ class equipment_info(models.Model):
 
     sn = fields.Char(string=u"序列号",required=True)
     firms = fields.Char( string=u"设备厂商",required=True)
-    device_name = fields.Char(string="设备名称", required=True)
+    device_name = fields.Char(string="设备名称",)
     device_type = fields.Char(string=u"设备类型",required=True)
-    asset_number = fields.Char(string=u"资产编号",required=True)
+    asset_number = fields.Char(string=u"资产编号",)
     unit_type = fields.Char(string=u"设备型号",required=True)
     equipment_source = fields.Char(string=u"设备来源",required=True)
-    equipment_status = fields.Selection([(u'库存', u"库存"),
-                               (u'故障', u"故障"),
-                               (u'专用', u"专用"),
-                               (u'待报废', u"待报废"),
-                               (u'暂存', u"暂存"),
-                               ],string=u"设备状态",required=True)
+    equipment_status = fields.Selection([
+                               (u'完好', u'完好'),
+                               (u'故障', u'故障'),
+                               # (u'库存', u"库存"),
+                               # (u'故障', u"故障"),
+                               # (u'专用', u"专用"),
+                               # (u'待报废', u"待报废"),
+                               # (u'暂存', u"暂存"),
+                               ],string=u"设备可用性",required=True)
     equipment_use = fields.Selection([
                                (u'公共备件', u"公共备件"),
                                (u'专用备件', u"专用备件"),
@@ -31,7 +34,7 @@ class equipment_info(models.Model):
                                 ],string=u"设备用途",required=True)
     state = fields.Selection([
         (u'待入库',u'待入库'),
-        (u'已入库',u'已入库'),
+        (u'库存',u'库存'),
         (u'流程中',u'流程中'),
         (u'领用',u'领用'),
         (u'借用',u'借用'),
@@ -214,10 +217,11 @@ class equipment_storage(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'user_id': self.user_id.id,'operate':'已入库' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'入库' ,'sn':sn.id,'order_id':self.storage_id,'date':self.create_date,
+             'store_id':self.id,})
             self.state = 'done'
             for device in self.SN:
-                device.state = u'已入库'
+                device.state = u'库存'
             self.approver_id = None
 
         if self.approver_id:
@@ -239,7 +243,7 @@ class equipment_storage(models.Model):
     def action_to_cancel(self):
         self.state = 'cancel'
         for device in self.SN:
-                device.state = u'已入库'
+                device.state = u'库存'
         self.approver_id = None
 
 
@@ -395,7 +399,7 @@ class equipment_lend(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'user_id': self.user_id.id,'operate':'借用' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'借用' ,'sn':sn.id,'order_id':self.lend_id,'lend_id':self.id,'date':self.create_date})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'借用'
@@ -441,7 +445,7 @@ class equipment_lend(models.Model):
     def action_to_cancel(self):
         self.state = 'cancel'
         for device in self.SN:
-                device.state = u'已入库'
+                device.state = u'库存'
         self.approver_id = None
 
 
@@ -597,7 +601,7 @@ class equipment_get(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-                {'user_id': self.user_id.id,'operate':'领用' ,'sn':sn.id})
+                {'user_id': self.user_id.id,'operate':'领用' ,'sn':sn.id,'order_id':self.get_id,'get_id':self.id,'date':self.create_date})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'领用'
@@ -634,14 +638,14 @@ class equipment_get(models.Model):
     def action_to_cancel(self):
         self.state = 'cancel'
         for device in self.SN:
-                device.state = u'已入库'
+                device.state = u'库存'
         self.approver_id = None
 
     @api.multi
     def action_to_cancel(self):
         self.state = 'cancel'
         for device in self.SN:
-                device.state = u'已入库'
+                device.state = u'库存'
         self.approver_id = None
 
 
@@ -799,7 +803,7 @@ class equipment_it_apply(models.Model):
         elif self.state == 'ass_admin_detection':
             for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'user_id': self.user_id.id,'operate':'IT环境申请' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'IT环境申请' ,'sn':sn.id,'order_id':self.apply_id,'apply_id':self.id,'date':self.create_date})
             self.state = 'done'
             for device in self.SN:
                 device.state = u'IT环境'
@@ -837,7 +841,7 @@ class equipment_it_apply(models.Model):
     def action_to_cancel(self):
         self.state = 'cancel'
         for device in self.SN:
-                device.state = u'已入库'
+                device.state = u'库存'
         self.approver_id = None
 
 
@@ -910,10 +914,11 @@ class back_to_store(models.Model):
             {'approver_id': self.approver_id.id, 'result': u'通过', 'back_id': self.id})
         for sn in self.SN:
                 self.env['asset_management.use_record'].create(
-            {'user_id': self.user_id.id,'operate':'已入库' ,'sn':sn.id})
+            {'user_id': self.user_id.id,'operate':'归还' ,'sn':sn.id,'order_id':self.back_id,'date':self.create_date,
+             'back_id':self.id,})
         self.state = 'done'
         for sn in self.SN:
-            sn.state = u'已入库'
+            sn.state = u'库存'
         self.approver_id = None
 
     @api.multi
@@ -1025,4 +1030,11 @@ class use_record(models.Model):
     equipment_source = fields.Char(related="sn.equipment_source", string=u"设备来源", store='True')
     user_id = fields.Many2one("res.users", string="申请人信息")
     operate = fields.Char(string="设备操作记录")
+    order_id = fields.Char(string='单号')
+    date = fields.Date(string='时间')
+    lend_id = fields.Many2one('asset_management.equipment_len',string='借用单号')
+    get_id = fields.Many2one('asset_management.equipment_get',string='领用单号')
+    it_id = fields.Many2one('asset_management.equipment_it_apply',string='IT环境单号')
+    back_id = fields.Many2one('asset_management.back_to_store',string='归还单号')
+    store_id = fields.Many2one('asset_management.equipment_storage',string='入库单号')
 

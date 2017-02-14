@@ -7,7 +7,7 @@
             <field name="res_model">asset_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
-            <field name ="domain">['|',('equipment_use','=',u'公共备件'),('equipment_use','=',u'专用备件'),('state','=',u'已入库')]</field>
+            <field name ="domain">['|',('equipment_use','=',u'公共备件'),('equipment_use','=',u'专用备件'),('state','=',u'库存')]</field>
              <field name="view_id" ref="asset_management_tree_view" />
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">Create the first info
@@ -176,7 +176,7 @@
             <field name="res_model">asset_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
-            <field name ="domain">[('owner','=',uid),('state','=','已入库')]</field>
+            <field name ="domain">[('owner','=',uid),('state','=','库存')]</field>
              <field name="view_id" ref="asset_management_tree_view" />
 
         </record>
@@ -203,7 +203,7 @@
             <field name="res_model">asset_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
-            <field name ="domain">[('state','=',u'IT环境'),('apply_ids','like',uid)]</field>
+            <field name ="domain">[('state','=',u'IT环境'),('apply_ids.user_id','like',uid)]</field>
              <field name="view_id" ref="asset_management_tree_view" />
         </record>
         <record id="examing_asset_info_action" model="ir.actions.act_window" >

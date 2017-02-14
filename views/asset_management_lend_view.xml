@@ -18,7 +18,7 @@
                                 <field name="asset_number" string = "资产编号"/>
                                 <field name="unit_type" string = "设备型号"/>
                                 <field name="equipment_source" string = "设备来源"/>
-                                <field name="equipment_status" string = "设备状态"/>
+                                <field name="equipment_status" string = "设备可用性"/>
                                 <field name="equipment_use" string = "设备用途"/>
                                 <field name="owner" string = "归属人"/>
                         </group>
@@ -54,7 +54,7 @@
                                 <field name="asset_number" string = "资产编号"/>
                                 <field name="unit_type" string = "设备型号"/>
                                 <field name="equipment_source" string = "设备来源"/>
-                                <field name="equipment_status" string = "设备状态"/>
+                                <field name="equipment_status" string = "设备可用性"/>
                                 <field name="equipment_use" string = "设备用途"/>
                                 <field name="owner" string = "归属人"/>
                         </group>
@@ -67,6 +67,7 @@
                                 <field name="machine_room" string = "存放机房"/>
                                 <field name="cabinet_number" string = "机柜编号"/>
                                 <field name="start_u_post" string = "起始U位"/>
+                                <field name="write_date" string="时间"/>
                                 <field name="state" string="状态"/>
                         </group>
                     </group>
@@ -82,10 +83,11 @@
                     <field name="device_name" string = "设备名称"/>
                     <field name="firms" string = "设备厂商"/>
                     <field name="equipment_source" string = "设备来源"/>
-                    <field name="equipment_status" string = "设备状态"/>
+                    <field name="equipment_status" string = "设备可用性"/>
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="state" string="状态"/>
+                    <field name="write_date" string="时间"/>
                 </tree>
             </field>
         </record>
@@ -99,10 +101,11 @@
                     <field name="unit_type" string = "设备型号"/>
                     <field name="firms" string = "设备厂商"/>
                     <field name="equipment_source" string = "设备来源"/>
-                    <field name="equipment_status" string = "设备状态"/>
+                    <field name="equipment_status" string = "设备可用性"/>
                     <field name="owner" string = "归属人"/>
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="state" string="状态"/>
+                    <field name="write_date" string="时间"/>
                 </tree>
             </field>
         </record>
@@ -116,7 +119,7 @@
                         <filter string="设备名称" name="device_name" context="{'group_by':'device_name'}"/>
                         <filter string="设备厂商" name="firms" context="{'group_by':'firms'}"/>
                         <filter string="设备来源" name="equipment_source" context="{'group_by':'equipment_source'}"/>
-                        <filter string="设备状态" name="equipment_status" context="{'group_by':'equipment_status'}"/>
+                        <filter string="设备可用性" name="equipment_status" context="{'group_by':'equipment_status'}"/>
                         <filter string="归属人" name="owner" context="{'group_by':'owner'}"/>
                         <filter string="设备用途" name="equipment_use" context="{'group_by':'equipment_use'}"/>
                         <filter string="状态" name="state" context="{'group_by':'state'}"/>
@@ -243,7 +246,8 @@
             <field name="name">equipment_lend.tree</field>
             <field name="model">asset_management.equipment_lend</field>
             <field name="arch" type="xml">
-                <tree string ="equipment_lend" create="false" delete = "false" edit = "false">
+                <tree string ="equipment_lend" create="false" delete = "false" edit = "false" default="sequence,create_date desc">
+                    <field name="lend_id" string="借用单号"/>
                     <field name="SN" string = "设备SN" model = 'One2many'/>
                     <field name="user_id" string = "申请人"/>
                     <field name="approver_id" string = "审批人"/>
