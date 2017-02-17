@@ -246,13 +246,14 @@
             <field name="name">equipment_lend.tree</field>
             <field name="model">asset_management.equipment_lend</field>
             <field name="arch" type="xml">
-                <tree string ="equipment_lend" create="false" delete = "false" edit = "false" default="sequence,create_date desc">
+                <tree string ="equipment_lend" create="false" delete = "false" edit = "false" default_order="id desc">
                     <field name="lend_id" string="借用单号"/>
                     <field name="SN" string = "设备SN" model = 'One2many'/>
                     <field name="user_id" string = "申请人"/>
                     <field name="approver_id" string = "审批人"/>
                     <field name="state" string = "状态"/>
                     <field name="lend_purpose" string = "借用目的"/>
+                     <field name="create_date" string = "借用时间"/>
                 </tree>
             </field>
         </record>

@@ -11,6 +11,7 @@ it_examine_acess,it_examine_acess,model_asset_management_it_examine,,1,1,1,1
 back_to_store_acess,back_to_store_acess,model_asset_management_back_to_store,,1,1,1,1
 back_examine_acess,back_examine_acess,model_asset_management_back_examine,,1,1,1,1
 use_record_acess,use_record_acess,model_asset_management_use_record,,1,1,1,1
+rma_record_acess,rma_record_acess,model_asset_management_rma,,1,1,1,1
 
 
 

@@ -77,11 +77,12 @@
             <field name="name">equipment_storage.tree</field>
             <field name="model">asset_management.equipment_storage</field>
             <field name="arch" type="xml">
-                <tree string = 'equipment_storge' delete = "false" default="sequence,create_date desc">
+                <tree string = 'equipment_storge' delete = "false" default_order="id desc">
                     <field name="storage_id" string = "入库单号"/>
                     <field name="user_id" string="申请人"/>
                     <field name="approver_id" string = "审批人"/>
                     <field name="state" string = "状态"/>
+                     <field name="create_date" string = "申请时间"/>
                 </tree>
              </field>
         </record>
@@ -155,7 +156,7 @@
                                     <field name="result" string="审批结果" />
                                     <field name = "date" string = "审批时间" />
 
-                                </tree>
+                             </tree>
                          </field>
                     </group>
 
@@ -203,13 +204,14 @@
             <field name="name">equipment_get.tree</field>
             <field name="model">asset_management.equipment_get</field>
             <field name="arch" type="xml">
-                <tree string = 'equipment_get' create="false" delete = "false"  edit = "false" default="sequence,create_date desc">
+                <tree string = 'equipment_get' create="false" delete = "false"  edit = "false" default_order="id desc">
                         <field name="get_id" string = "领用单号"/>
                         <field name="user_id" string = "申请人"/>
                         <field name="approver_id" string = "审批人"/>
                         <field name="get_date" string = "领用日期"/>
                         <field name="get_purpose" string = "领用目的"/>
                         <field name="state" string = "状态"/>
+                         <field name="create_date" string = "领用时间"/>
                 </tree>
             </field>
         </record>
@@ -333,12 +335,13 @@
             <field name="name">equipment_it_apply.tree</field>
             <field name="model">asset_management.equipment_it_apply</field>
             <field name="arch" type="xml">
-                <tree string ="equipment_it_apply" create="false" delete = "false" edit = "false" default="sequence,create_date desc">
+                <tree string ="equipment_it_apply" create="false" delete = "false" edit = "false" default_order="id desc">
                     <field name="apply_id" string = "领用单号"/>
                     <field name="user_id" string = "申请人"/>
                     <field name="tester" string = "测试人员"/>
                     <field name="approver_id" string = "审批人"/>
                     <field name="state" string = "状态"/>
+                     <field name="create_date" string = "申请时间"/>
                 </tree>
             </field>
         </record>
@@ -440,11 +443,12 @@
             <field name="name">back_to_store.tree</field>
             <field name="model">asset_management.back_to_store</field>
             <field name="arch" type="xml">
-                <tree string ="back_to_store" create="false" delete = "false" edit = "false" default="sequence,create_date desc">
+                <tree string ="back_to_store" create="false" delete = "false" edit = "false" default_order="id desc">
                     <field name="back_id" string = "归还单号"/>
                     <field name="user_id" string = "申请人"/>
                     <field name="approver_id" string = "审批人"/>
                     <field name="state" string = "状态"/>
+                    <field name="create_date" string = "归还时间"/>
                 </tree>
             </field>
         </record>
@@ -479,7 +483,7 @@
             <field name="name">use_record.tree</field>
             <field name="model">asset_management.use_record</field>
             <field name="arch" type="xml">
-                <tree string ="use_record" create="false" delete = "false" edit = "false" default="sequence,create_date desc">
+                <tree string ="use_record" create="false" delete = "false" edit = "false" default_order="id desc">
                     <field name="sn" string="序列号"/>
                     <field name="firms" string="设备厂商"/>
                     <field name="device_name" string="设备名字"/>
@@ -512,11 +516,11 @@
                             <field name="equipment_source" string="设备来源"/>
                             <field name="user_id" string="申请人信息"/>
                             <field name="operate" string="设备操作记录"/>
-                            <field name="lend_id" string="借用单号" attrs="{'invisible':[('operate','like','借用')]}"/>
-                            <field name="get_id" string="领用单号" attrs="{'invisible':[('operate','like','领用')]}"/>
-                            <field name="store_id" string="入库单号" attrs="{'invisible':[('operate','like','入库')]}"/>
-                            <field name="it_id" string="IT环境单号" attrs="{'invisible':[('operate','like','IT环境')]}"/>
-                            <field name="back_id" string="归还单号" attrs="{'invisible':[('operate','like','归还')]}"/>
+                            <field name="lend_id" string="借用单号" attrs="{'invisible':[('operate','not like','借用')]}"/>
+                            <field name="get_id" string="领用单号" attrs="{'invisible':[('operate','not like','领用')]}"/>
+                            <field name="store_id" string="入库单号" attrs="{'invisible':[('operate','not like','入库')]}"/>
+                            <field name="it_id" string="IT环境单号" attrs="{'invisible':[('operate','not like','IT环境')]}"/>
+                            <field name="back_id" string="归还单号" attrs="{'invisible':[('operate','not like','归还')]}"/>
 
                         </group>
                         </group>
@@ -524,5 +528,140 @@
                 </form>
             </field>
         </record>
+
+         <record model="ir.ui.view" id="rma_form_view">
+            <field name="name">rma_record.form</field>
+            <field name="model">asset_management.rma</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header >
+                        <button name="action_to_done" type="object" string="关闭" states="processing" class="oe_highlight" />
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                             <group>
+                                <field name="rma_no" string="RMA编号" readonly="True"/>
+                                <field name="bad_model" string="坏件型号"/>
+                                <field name="bad_sn" string="坏件序列号"/>
+                                <field name="contact" string="坏件联系人"/><field name="type" string="类型"/>
+                                <field name="case_id" string="case编号"/>
+                             </group>
+                             <group>
+                                <field name="phone" string="联系电话"/>
+                                <field name="address" stirng="收货地址"/>
+                             </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="store_id" string="入库单号" attrs="{'invisible':[('type','=','非南天RMA')]}"/>
+                                <field name="get_id" string="领用单号" attrs="{'invisible':[('type','=','非南天RMA')]}"/>
+                                <field name="ava_sn" string="好件序列号" placeholder='对应坏件序列号填写相应的好件序列号' attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="ava_model" string="好件型号"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="ava_source" string="好件来源"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                            </group>
+                            <group>
+                                <field name="delivery_time" string="发货时间"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="arrival_time" string="到货时间"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="back" string="坏件是否归还" attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <!--<field name="user_id" string="处理人" readonly="True" attrs="{'invisible':[('type','=','南天RMA')]}"/>-->
+                                <!--<field name="state" string="状态"  readonly="True" attrs="{'invisible':[('type','=','南天RMA')]}"/>-->
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="pended_rma_form_view">
+            <field name="name">pended_rma_record.form</field>
+            <field name="model">asset_management.rma</field>
+            <field name="arch" type="xml">
+                <form create="false" edit="false">
+                    <header >
+                         <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                             <group>
+                                <field name="rma_no" string="RMA编号" readonly="True"/>
+                                <field name="bad_model" string="坏件型号"/>
+                                <field name="bad_sn" string="坏件序列号"/>
+                                <field name="contact" string="坏件联系人"/>
+                                <field name="type" string="类型"/>
+                                <field name="case_id" string="case编号"/>
+                             </group>
+                             <group>
+                                <field name="phone" string="联系电话"/>
+                                <field name="address" stirng="收货地址"/>
+                             </group>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="store_id" string="入库单号" attrs="{'invisible':[('type','=','非南天RMA')]}"/>
+                                <field name="get_id" string="领用单号" attrs="{'invisible':[('type','=','非南天RMA')]}"/>
+                                <field name="ava_sn"  string="好件序列号" attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="ava_model" string="好件型号"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="ava_source" string="好件来源"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                            </group>
+                            <group>
+                                <field name="delivery_time" string="发货时间"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="arrival_time" string="到货时间"  attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <field name="back" string="坏件是否归还" attrs="{'invisible':[('type','=','南天RMA')]}"/>
+                                <!--<field name="user_id" string="处理人" readonly="True" attrs="{'invisible':[('type','=','南天RMA')]}"/>-->
+                                <!--<field name="state" string="状态"  readonly="True" attrs="{'invisible':[('type','=','南天RMA')]}"/>-->
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="create_rma_form_view">
+            <field name="name">create_rma_record.form</field>
+            <field name="model">asset_management.rma</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="rma_no" string="RMA编号" readonly="True"/>
+                                <field name="bad_model" string="坏件型号"/>
+                                <field name="bad_sn" placeholder='如果有多个SN,请以空格分开' string="坏件序列号"/>
+                                <field name="contact" string="坏件联系人"/>
+                                <field name="type" string="类型"/>
+                                <field name="case_id" string="case编号"/>
+                            </group>
+                            <group>
+                                <field name="phone" string="联系电话"/>
+                                <field name="address" stirng="收货地址"/>
+                            </group>
+
+                        </group>
+                         <footer>
+                            <button name="subscribe" type="object"
+                                    string="提交" class="oe_highlight"/>
+                            or
+                            <button special="cancel" string="取消"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="rma_tree_view">
+            <field name="name">rma.tree</field>
+            <field name="model">asset_management.rma</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="rma_no" string="RMA编号" readonly="True"/>
+                    <field name="bad_model" string="坏件型号"/>
+                    <field name="bad_sn" string="坏件序列号"/>
+                    <field name="contact" string="坏件联系人"/>
+                    <field name="type" string="类型"/>
+                    <field name="case_id" string="case编号"/>
+                    <field name="phone" string="联系电话"/>
+                </tree>
+            </field>
+        </record>
+
     </data>
 </openerp>

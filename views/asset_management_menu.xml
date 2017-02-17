@@ -291,7 +291,6 @@
             <field name="act_window_id" ref="all_asset_info_action" />
         </record>
 
-
         <record id="use_record_action" model="ir.actions.act_window">
             <field name="name">设备使用记录</field>
             <field name="res_model">asset_management.use_record</field>
@@ -299,6 +298,49 @@
             <field name="view_model">tree,form</field>
         </record>
 
+        <record id="rma_action" model="ir.actions.act_window">
+            <field name="name">RMA</field>
+            <field name="res_model">asset_management.rma</field>
+            <field name="domain">[('user_id','=',uid)]</field>
+            <field name="view_type">form</field>
+            <field name="view_model">tree,form</field>
+        </record>
+        <record id="processing_form_rma_action" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="rma_form_view" />
+            <field name="act_window_id" ref="rma_action" />
+        </record>
+        <record id="processing_tree_rma_action" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
+            <field name="view_id" ref="rma_tree_view" />
+            <field name="act_window_id" ref="rma_action" />
+        </record>
+        <record id="pended_rma_action" model="ir.actions.act_window">
+            <field name="name">已处理RMA</field>
+            <field name="res_model">asset_management.rma</field>
+            <field name="view_type">form</field>
+            <field name="view_model">tree,form</field>
+        </record>
+        <record id="pended_form_rma_action" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="pended_rma_form_view" />
+            <field name="act_window_id" ref="pended_rma_action" />
+        </record>
+        <record id="pended_tree_rma_action" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="sequence" eval="1"/>
+            <field name="view_id" ref="rma_tree_view" />
+            <field name="act_window_id" ref="pended_rma_action" />
+        </record>
+        <record id="create_rma_action" model="ir.actions.act_window">
+            <field name="name">create RMA</field>
+            <field name="res_model">asset_management.rma</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="create_rma_form_view" />
+            <field name="target" >new</field>
+            <field name="view_model">tree,form</field>
+        </record>
 
         <menuitem id="main_asset_management_menu" name="Asset management"/>
         <!-- A first level in the left side menu is needed before using action= attribute -->
@@ -335,6 +377,10 @@
 
         <menuitem id="all_use_record" name="设备使用记录" parent="main_asset_management_menu" groups="asset_management.group_ass_admin,asset_management.group_ass_director,asset_management.group_ass_admin_manager,base.group_system"/>
         <menuitem id="use_record" name="设备使用记录" parent="all_use_record" action="use_record_action"/>
+
+        <menuitem id="rma" name="RMA" parent="main_asset_management_menu" />
+        <menuitem id="rma_record" name="待处理RMA" parent="rma" action="rma_action" groups="asset_management.group_ass_admin,base.group_system"/>
+        <menuitem id="pended_rma_record" name="RMA" parent="rma" action="pended_rma_action"/>
 
     </data>
 </openerp>

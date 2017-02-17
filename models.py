@@ -1,5 +1,5 @@
 #-*-coding:utf-8-*-
-from openerp import fields,api
+from openerp import fields,api,exceptions
 from openerp import models
 from email.utils import formataddr
 import email
@@ -287,6 +287,12 @@ class equipment_lend(models.Model):
     lend_purpose = fields.Char(string=u"借用目的",required=True)
     owners = fields.Many2many('res.users',string=u"归属人们")
     lend_exam_ids = fields.One2many('asset_management.lend_examine','lend_id',string='审批记录')
+
+    @api.one
+    @api.constrains(' lend_date', 'promise_date')
+    def _check_promise_date_more_than_lend_date(self):
+        if self.lend_date > self.promise_date :
+            raise exceptions.ValidationError("归还日期不能小于申请日期")
 
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('asset_management.equipment_info')
@@ -692,6 +698,12 @@ class equipment_it_apply(models.Model):
     owners = fields.Many2many('res.users',string=u"归属人们")
     apply_exam_ids = fields.One2many('asset_management.it_examine','IT_id',string='审批记录')
 
+    @api.one
+    @api.constrains('use_begin', 'use_over')
+    def _check_use_over_more_than_use_begin(self):
+        if self.use_begin > self.use_over:
+            raise exceptions.ValidationError("结束日期不能小于开始日期")
+
     def create(self, cr, uid, vals, context=None):
         template_model = self.pool.get('asset_management.equipment_info')
         devices = template_model.browse(cr, uid, vals['SN'][0][2], context=None)
@@ -1038,3 +1050,58 @@ class use_record(models.Model):
     back_id = fields.Many2one('asset_management.back_to_store',string='归还单号')
     store_id = fields.Many2one('asset_management.equipment_storage',string='入库单号')
 
+class  Rma(models.Model):
+    rec_name = 'rma_no'
+    _name = 'asset_management.rma'
+
+    def _default_case(self):
+        return self.env['server_desk.case'].browse(self._context.get('active_ids'))
+
+    rma_no = fields.Char(string='RMA编号')
+    bad_model = fields.Text(string='坏件型号')
+    bad_sn = fields.Text(string='坏件序列号')
+    contact = fields.Char(string='坏件联系人')
+    phone = fields.Char(string='联系电话')
+    address = fields.Text(string='收货地址')
+    type = fields.Selection([(u'南天RMA', u'南天RMA'), (u'非南天RMA', u'非南天RMA')],string='类型')
+    case_id = fields.Many2one('server_desk.case',string='case编号', default=_default_case)
+    store_id = fields.Many2one('asset_management.back_to_store', string='入库单号')
+    get_id = fields.Many2one('asset_management.equipment_get', string='领用单号')
+    ava_sn = fields.Text(string='好件序列号')
+    ava_model = fields.Text(string='好件型号')
+    ava_source = fields.Text(string='好件来源')
+    delivery_time = fields.Date(string='发货时间')
+    arrival_time = fields.Date(string='到货时间')
+    back = fields.Boolean(string='坏件是否返还')
+    user_id = fields.Many2one('res.users', string='处理人')
+    state = fields.Selection([('new', u'新建'), ('processing', u'处理中'), ('down', u'关闭')], string='状态')
+
+    def create(self, cr, uid, vals, context=None):
+        dates = fields.Date.today().split('-')
+        date = ''.join(dates)
+        template_model = self.pool.get('asset_management.rma')
+        ids = template_model.search(cr, uid, [('rma_no', 'like', date)], context=None)
+        rmas = template_model.browse(cr, uid, ids, context=None).sorted(key=lambda r: r.rma_no)
+        if len(rmas):
+            vals['rma_no'] = 'R' + str(int(rmas[-1].rma_no[1:]) + 1)
+        else:
+            vals['rma_no'] = 'R' + date + '001'
+        return super(Rma, self).create(cr, uid, vals, context=context)
+
+    @api.multi
+    def subscribe(self):
+        self.state = 'processing'
+        self.user_id = self.env['res.groups'].search([('name', '=', u'资产管理员')], limit=1).users[0]
+        return {'aaaaaaaaaaaaaa'}
+
+    @api.multi
+    def action_to_done(self):
+        if self.type == u'非南天RMA':
+            if self.back:
+                self.state = '关闭'
+                self.user_id = None
+            else:
+                raise exceptions.ValidationError("坏设备没有归还，还不能关闭RMA")
+        else:
+            self.state = '关闭'
+            self.user_id = None
