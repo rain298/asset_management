@@ -28,6 +28,7 @@ openerp.asset_management=function(instance){
                     }
                 }
             },100)
+            this.menuCounter();
         },
         //视图加载完成后定义自己的动作
         addAction:function(title){
@@ -135,6 +136,20 @@ openerp.asset_management=function(instance){
         },
         start:function(){
         //暂时不需要
+        },
+        menuCounter:function(){
+            var timer = setInterval(function(){
+                var mC=$("div.badge.pull-right");
+                if(mC.length){
+                    clearInterval(timer);
+                    timer=0;
+                    mC.each(function(i,v){
+                        $(v).parents("ul.nav.nav-stacked")
+                            .prev("div.oe_secondary_menu_section")
+                            .append('<div class="badge pull-right">'+$(v).html()+'</div>');
+                    });
+                }
+            },100);
         }
     });
     instance.asset_management.widget=new instance.asset_management.Widget();
