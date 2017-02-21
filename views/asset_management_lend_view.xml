@@ -133,7 +133,7 @@
                 </search>
             </field>
         </record>
-         <record model="ir.ui.view" id="asset_management_graph_view">
+        <record model="ir.ui.view" id="asset_management_graph_view">
             <field name="name">device_graph</field>
             <field name="model">asset_management.equipment_info</field>
             <field name="arch" type="xml">

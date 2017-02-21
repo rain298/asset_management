@@ -106,7 +106,7 @@ class equipment_storage(models.Model):
         ('demander', u"需求方申请"),
         ('ass_admin', u"资产管理员"),
         ('owner', u"资产归属人"),
-        ('ass_admin_manager', u"MA主管"),
+        ('ass_admin_manager', u"资产管理部门主管"),
         ('ass_admin_detection', u"资产管理员检测确认"),
         ('done',u'完成'),
         ('cancel',u'已作废'),
@@ -680,7 +680,7 @@ class equipment_it_apply(models.Model):
         ('ass_owner', u"资产归属人"),
         ('ass_admin', u"资产管理员"),
         ('dem_leader', u"需求方直属部门领导"),
-        ('dem_leader_manager', u"需求方直属部门总经理"),
+        ('dem_leader_manager', u"需求方直属部门主管"),
         ('ass_director', u"资产管理部门负责人"),
         ('ass_admin_manager', u"资产管理部门主管"),  # 副总裁级MA
         ('ass_admin_detection', u"资产管理员检测确认"),
