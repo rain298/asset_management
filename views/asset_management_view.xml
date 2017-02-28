@@ -1,38 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
+         <record model="ir.ui.view" id="asset_storage_create_form_view">
+            <field name="name">equipment_storage.create_form</field>
+            <field name="model" >asset_management.equipment_storage</field>
+            <field name="arch" type="xml">
+                <form string="equipment_get Form" >
+                    <header>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <group>
+                    <group >
+                         <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
+                    </group>
+                        <group>
+                            <field name="storage_id" string = "入库单号" readonly="True" />
+                            <field name="user_id" string = "申请人" readonly="True"/>
+                        </group>
+                        <group>
+                            <field name="approver_id" string = "审批人" readonly="True"/>
+                            <field name="purpose" string="入库目的" />
+                        </group>
+
+                    </group>
+                     <group>
+                        <field name="SN" string = "设备" mode="tree"/>
+                    </group>
+
+                    <footer>
+                        <button name="subscribe" type="object"
+                                string="保存为草稿" class="oe_highlight"/>
+                        or
+                        <button special="cancel" string="取消提单"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
         <record model="ir.ui.view" id="pending_asset_storage_form_view">
             <field name="name">equipment_storage.form</field>
             <field name="model" >asset_management.equipment_storage</field>
             <field name="arch" type="xml">
                 <form string="equipment_storage Form" create="false" delete = "false">
                      <header>
-                        <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
-                        <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
-                        <button name="action_to_demander" type="object" string="退回" states="ass_admin,owner,ass_admin_manager" class="oe_highlight" />
-                        <button name="action_to_next" type="object" string="同意" states="ass_admin,owner,ass_admin_manager" class="oe_highlight" />
+                         <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
+                         <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
+                         <button name="action_to_demander" type="object" string="退回" states="ass_admin,owner,ass_admin_manager" class="oe_highlight" />
+                         <button name="action_to_next" type="object" string="同意" states="ass_admin,owner,ass_admin_manager" class="oe_highlight" />
                          <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
-                        <field name="state" widget="statusbar"/>
+                         <field name="state" widget="statusbar"/>
                     </header>
                     <group>
                         <group>
                             <field name="storage_id" string = "入库单号" readonly="True" />
+                            <field name="purpose" string="入库目的" />
                         </group>
                         <group>
-                           <field name="user_id" string="申请人" readonly="True"/>
+                            <field name="user_id" string="申请人" readonly="True"/>
                             <field name="approver_id" string="审批人" readonly="True"/>
                         </group>
 
                     </group>
                     <group>
                         <field name="SN" string = "设备" domain="[('state', 'ilike', '流程中')]" mode="tree"/>
-                         <field name="store_exam_ids" string="审批记录">
+                        <field name="store_exam_ids" string="审批记录">
                              <tree string="审批记录" edit="false" create="false">
                                     <field name="approver_id" string = "审批人" />
                                     <field name="result" string="审批结果" />
                                     <field name = "date" string = "审批时间" />
-
-                                </tree>
+                             </tree>
                          </field>
                     </group>
                 </form>
@@ -52,6 +87,7 @@
                     </group>
                         <group>
                             <field name="storage_id" string = "入库单号" readonly="True"/>
+                             <field name="purpose" string="入库目的" />
                         </group>
                         <group>
                            <field name="user_id" string="申请人" readonly="True"/>
@@ -66,7 +102,6 @@
                                     <field name="approver_id" string = "审批人" />
                                     <field name="result" string="审批结果" />
                                     <field name = "date" string = "审批时间" />
-
                                 </tree>
                          </field>
                     </group>
@@ -82,6 +117,7 @@
                     <field name="user_id" string="申请人"/>
                     <field name="approver_id" string = "审批人"/>
                     <field name="state" string = "状态"/>
+                     <field name="purpose" string="入库目的" />
                      <field name="create_date" string = "申请时间"/>
                 </tree>
              </field>
@@ -130,9 +166,10 @@
                 <form string="equipment_get Form" delete = "false" create="false">
                     <header>
                         <button name="action_to_confirm" type="object" string="提交" states='demander' class="oe_highlight" />
+                        <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
                         <button name="action_to_demander" type="object" string="退回" states="ass_admin,ass_owner,dem_leader,ass_director,ass_admin_manager" class="oe_highlight" />
                         <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,ass_director,ass_admin_manager" class="oe_highlight" />
-                        <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
+                        <!--<button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />-->
                         <button name="action_to_next" type="object" string="检测确认" states="ass_admin_detection" class="oe_highlight"/>
                         <field name="state" widget="statusbar"/>
                     </header>
@@ -259,9 +296,10 @@
                 <form string="equipment_apply Form" create="false" delete = "false" >
                      <header>
                          <button name="action_to_confirm" type="object" string="提交" states="demander" class="oe_highlight" />
+                         <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
                         <button name="action_to_demander" type="object" string="拒绝" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
                          <button name="action_to_next" type="object" string="同意" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" class="oe_highlight" />
-                         <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
+                         <!--<button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />-->
                          <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
                         <field name="state" widget="statusbar"/>
                      </header>
@@ -340,6 +378,7 @@
                     <field name="user_id" string = "申请人"/>
                     <field name="tester" string = "测试人员"/>
                     <field name="approver_id" string = "审批人"/>
+                    <field name="application_purpose" string = "申请目的"/>
                     <field name="state" string = "状态"/>
                      <field name="create_date" string = "申请时间"/>
                 </tree>
@@ -457,6 +496,14 @@
                     name="领用"
                     src_model="asset_management.equipment_info"
                     res_model="asset_management.equipment_get"
+                    view_mode="form"
+                    view_id="asset_get_create_form_view"
+                    target="new"
+                    key2="client_action_multi"/>
+        <act_window id="launch_session_get_wizard"
+                    name="入库"
+                    src_model="asset_management.equipment_info"
+                    res_model="asset_management.equipment_storage"
                     view_mode="form"
                     view_id="asset_get_create_form_view"
                     target="new"

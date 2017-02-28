@@ -32,6 +32,7 @@
                                 <field name="cabinet_number" string = "机柜编号"/>
                                 <field name="start_u_post" string = "起始U位"/>
                                 <field name="state" string="状态"/>
+
                         </group>
 
                     </group>
@@ -106,6 +107,7 @@
                     <field name="equipment_use" string = "设备用途"/>
                     <field name="state" string="状态"/>
                     <field name="write_date" string="时间"/>
+                    <field name="user_id" string="创建人"/>
                 </tree>
             </field>
         </record>
@@ -178,9 +180,10 @@
                 <form string="equipment_lend Form" create="false" delete = "false" >
                      <header>
                          <button name="action_to_confirm" type="object" states='demander' string="提交"  class="oe_highlight" />
-                        <button name="action_to_demander" type="object" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" string="退回"  class="oe_highlight" />
-                        <button name="action_to_next" type="object" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" string="同意" class="oe_highlight" />
-                         <button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />
+                         <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
+                         <button name="action_to_demander" type="object" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" string="退回"  class="oe_highlight" />
+                         <button name="action_to_next" type="object" states="ass_admin,ass_owner,dem_leader,dem_leader_manager,ass_director,ass_admin_manager" string="同意" class="oe_highlight" />
+                         <!--<button name="action_to_back" type="object" string="归还" states="done" class="oe_highlight" />-->
                          <button name="action_to_renew" type="object" states ='done' string="续借"  class="oe_highlight" />
                          <button name="action_to_next" type="object" states="ass_admin_detection" string="检测确认" class="oe_highlight" />
                          <field name="state" widget="statusbar"/>

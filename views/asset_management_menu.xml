@@ -41,7 +41,7 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <!--<field name="search_view_id" ref="asset_management_search_view"></field>-->
-           <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
+             <!-- <field name="view_id" ref="resource_cost_tree_view"/>-->
              <field name ="domain">[('approver_id','=',uid)]</field>
 
         </record>
@@ -176,7 +176,7 @@
             <field name="res_model">asset_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
-            <field name ="domain">[('owner','=',uid),('state','=','库存')]</field>
+            <field name ="domain">[('owner','=',uid)]</field>
              <field name="view_id" ref="asset_management_tree_view" />
 
         </record>
@@ -207,12 +207,23 @@
              <field name="view_id" ref="asset_management_tree_view" />
         </record>
         <record id="examing_asset_info_action" model="ir.actions.act_window" >
-            <field name="name">流程中的设备</field>
+            <field name="name">待入库的设备</field>
             <field name="res_model">asset_management.equipment_info</field>
             <field name="view_type">form</field>
             <field name="view_mode">tree,form,graph</field>
-            <field name ="domain">[('state','=',u'流程中')]</field>
-             <field name="view_id" ref="asset_management_tree_view" />
+            <field name ="domain">[('state','=',u'待入库')]</field>
+        </record>
+        <record id="examing_asset_info_action_tree" model="ir.actions.act_window.view">
+             <field name="view_mode">tree</field>
+             <field name="sequence" eval="1"/>
+             <field name="view_id" ref="all_asset_management_tree_view" />
+             <field name="act_window_id" ref="examing_asset_info_action" />
+        </record>
+        <record id="examing_asset_info_action_form" model="ir.actions.act_window.view">
+            <field name="view_mode">form</field>
+            <field name="sequence" eval="2"/>
+            <field name="view_id" ref="all_asset_management_form_view" />
+            <field name="act_window_id" ref="examing_asset_info_action" />
         </record>
 
         <record id="all_asset_info_action" model="ir.actions.act_window" >
