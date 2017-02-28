@@ -27,8 +27,7 @@ openerp.asset_management=function(instance){
                         }
                     }
                 }
-            },100)
-            this.menuCounter();
+            },100);
         },
         //视图加载完成后定义自己的动作
         addAction:function(title){
@@ -43,6 +42,7 @@ openerp.asset_management=function(instance){
                         self.removeBtn(title);//删除按钮
                         self.menuId=targetSpan.parent("a").attr("data-menu");
                         self.search(title);//添加搜索按钮
+                        self.menuCounter();
                     }
                 }
             },100);
@@ -139,14 +139,18 @@ openerp.asset_management=function(instance){
         },
         menuCounter:function(){
             var timer = setInterval(function(){
-                var mC=$("div.badge.pull-right");
+                var mC=$("a>div.badge.pull-right");
                 if(mC.length){
                     clearInterval(timer);
                     timer=0;
                     mC.each(function(i,v){
-                        $(v).parents("ul.nav.nav-stacked")
-                            .prev("div.oe_secondary_menu_section")
-                            .append('<div class="badge pull-right">'+$(v).html()+'</div>');
+                        var parent = $(v).parents("ul.nav.nav-stacked")
+                            .prev("div.oe_secondary_menu_section");
+                        if(parent.find("div.badge").length){
+                            parent.find("div.badge").html($(v).html());
+                        }else{
+                            parent.append('<div class="badge pull-right">'+$(v).html()+'</div>');
+                        }
                     });
                 }
             },100);
