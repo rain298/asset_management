@@ -500,7 +500,7 @@
                     view_id="asset_get_create_form_view"
                     target="new"
                     key2="client_action_multi"/>
-        <act_window id="launch_session_get_wizard"
+        <act_window id="launch_session_store_wizard"
                     name="入库"
                     src_model="asset_management.equipment_info"
                     res_model="asset_management.equipment_storage"
