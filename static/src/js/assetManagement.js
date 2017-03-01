@@ -82,12 +82,12 @@ openerp.asset_management=function(instance){
             this.l=n;
             var obj={
                 // "所有的设备":[1+n,2+n,3+n,5+n],
-                "库存中的设备":[2+n,3+n,5+n],
-                "借用设备":[4+n],
-                "领用设备":[4+n],
-                "实验室设备":[4+n],
-                "我的设备":[1+n],
-                "流程中的设备":[1+n]
+                "库存中的设备":[2+n,4+n,6+n],
+                "借用设备":[5+n],
+                "领用设备":[5+n],
+                "实验室设备":[5+n],
+                //"我的设备":[1+n],
+                "待入库的设备":[3+n]
             };
             var timer=setInterval(function(){
                 if($("li.oe_sidebar_action").length>3){
