@@ -518,7 +518,7 @@
                     key2="client_action_multi"/>
 
         <act_window id="launch_session_back_to_store_wizard"
-                    name="设备归还"
+                    name="归还"
                     src_model="asset_management.equipment_info"
                     res_model="asset_management.back_to_store"
                     view_mode="form"
