@@ -112,8 +112,11 @@ openerp.asset_management=function(instance){
                     "unit_type":true, "equipment_source":true, "equipment_status":false,
                     "equipment_use":false, "device_type":true, "asset_number":true,
                     "start_u_post":true};
-                var $searchMH=$('<button type="button">模糊搜索</button>');
+                var $searchMH=$('<button type="button" class="fuzzy_search">模糊搜索</button>');
                 $('.oe_view_manager_view_search').append($searchMH);
+                $('.oe_view_manager_view_search div.oe_searchview').css({
+                    "min-width":"300px"
+                });
                 $('.oe_view_manager_view_search').on("keyup",".oe_searchview_input",function(){
                     seachKey=$(this).html();
                 });
