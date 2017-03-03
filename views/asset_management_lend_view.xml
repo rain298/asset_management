@@ -177,7 +177,7 @@
             <field name="name">equipment_lend.form</field>
             <field name="model" >asset_management.equipment_lend</field>
             <field name="arch" type="xml">
-                <form string="equipment_lend Form" create="false" delete = "false" >
+                <form string="equipment_lend Form" create="false"  >
                      <header>
                          <button name="action_to_confirm" type="object" states='demander' string="提交"  class="oe_highlight" />
                          <button name="action_to_cancel" type="object" string="取消申请" states='demander' class="oe_highlight" />
@@ -217,7 +217,7 @@
             <field name="name">equipment_lend.form</field>
             <field name="model" >asset_management.equipment_lend</field>
             <field name="arch" type="xml">
-                <form string="equipment_lend Form" create="false" delete ="false" edit = "false">
+                <form string="equipment_lend Form" create="false"  edit = "false">
                      <header>
                         <field name="state" widget="statusbar"/>
                      </header>
@@ -249,7 +249,7 @@
             <field name="name">equipment_lend.tree</field>
             <field name="model">asset_management.equipment_lend</field>
             <field name="arch" type="xml">
-                <tree string ="equipment_lend" create="false" delete = "false" edit = "false" default_order="id desc">
+                <tree string ="equipment_lend" create="false"  edit = "false" default_order="id desc">
                     <field name="lend_id" string="借用单号"/>
                     <field name="SN" string = "设备SN" model = 'One2many'/>
                     <field name="user_id" string = "申请人"/>
