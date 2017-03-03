@@ -39,7 +39,7 @@ openerp.asset_management=function(instance){
                     var modelTitle=targetSpan.html().trim();
                     if(modelTitle=="Asset management"||modelTitle=="仓库管理"){
                         self.addBtn(title);//添加自定义按钮
-//                         self.removeBtn(title);//删除按钮
+                        self.removeBtn(title);//删除按钮
                         self.menuId=targetSpan.parent("a").attr("data-menu");
                         self.search(title);//添加搜索按钮
                         self.menuCounter();
