@@ -38,7 +38,6 @@ openerp.asset_management=function(instance){
                     clearInterval(timer);
                     var modelTitle=targetSpan.html().trim();
                     if(modelTitle=="Asset management"||modelTitle=="仓库管理"){
-                        self.addBtn(title);//添加自定义按钮
                         self.removeBtn(title);//删除按钮
                         self.menuId=targetSpan.parent("a").attr("data-menu");
                         self.search(title);//添加搜索按钮
@@ -46,34 +45,6 @@ openerp.asset_management=function(instance){
                     }
                 }
             },100);
-        },
-        addBtn:function(display_name){//添加自定义按钮
-            var self=this;
-            if(display_name=="库存中的设备"||(display_name=="所有的设备")){
-                var btnParent=$('tr.oe_header_row:last>td:last');
-                if(btnParent.length>0&&($('tr.oe_header_row button.assetM').length==0)){
-                    var btn=$("<button class='assetM oe_right'>入库</button>");
-                    btnParent.append(btn);
-                    btn.click(function(){
-                        self.jump();
-                    });
-                }
-            }
-        },
-        jump:function(){
-            var $spans = $("div[data-menu-parent="+this.menuId+"] .oe_menu_text");
-            $spans.each(function(i,v){
-                var text=$(v).html().trim();
-                if(text=="storing Menu"||text=="入库待审批"){
-                    $(v).parent("a").trigger("click");
-                    var timer=setInterval(function(){
-                        if($('.oe_list_buttons>.oe_list_add').length){
-                            clearInterval(timer);
-                            $('.oe_list_buttons>.oe_list_add').trigger("click");
-                        }
-                    },100)
-                }
-            });
         },
         removeBtn:function(display_name){
             var me=this;
@@ -116,6 +87,9 @@ openerp.asset_management=function(instance){
                 $('.oe_view_manager_view_search').append($searchMH);
                 $('.oe_view_manager_view_search div.oe_searchview').css({
                     "min-width":"300px"
+                });
+                $('.oe_view_manager_view_search div.oe_searchview>div.oe-autocomplete').css({
+                    "width":"300px"
                 });
                 $('.oe_view_manager_view_search').on("keyup",".oe_searchview_input",function(){
                     seachKey=$(this).html();
