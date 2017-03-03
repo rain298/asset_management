@@ -282,11 +282,13 @@
         </record>
         <record id="processed_back_to_store_tree_action" model="ir.actions.act_window.view">
             <field name="view_mode">tree</field>
+             <field name="sequence" eval="1"/>
             <field name="view_id" ref="back_to_store_tree_view" />
             <field name="act_window_id" ref="processed_back_to_store_action" />
         </record>
         <record id="processed_back_to_store_from_action" model="ir.actions.act_window.view">
             <field name="view_mode">form</field>
+             <field name="sequence" eval="2"/>
             <field name="view_id" ref="processed_back_to_store_form_view" />
             <field name="act_window_id" ref="processed_back_to_store_action" />
         </record>
